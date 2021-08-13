@@ -1,0 +1,48 @@
+.tagged{
+    position:absolute;
+    /* background: #3E444E; */
+    /* -webkit-border-radius: 20px; */
+    -moz-border-radius: 20px;
+    /* border-radius: 20px; */
+    /* border:2px solid #FFFFFF; */
+    visibility: hidden;
+    height:20px;
+    width:35px;
+    padding:11px;
+    z-index:2;
+    background-size: contain;
+    background-image: url(/upload/images/tag-icon.png);
+    background-repeat: no-repeat;
+}
+#tagged .tagged{
+    visibility:visible !important;
+}
+.tagged .taggd__button {
+    height: 0;
+}
+.tagged span {
+    position:absolute;
+    width:20px;
+    color: #FFFFFF;
+    font-family: Helvetica, Arial, Sans-Serif;
+    font-size: .8rem;
+    text-align:center;
+    margin:4px 0;
+}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight,.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    background-color: initial;
+}
+[role="menuitem"] {
+    padding:10px;
+}
+#droppable p {
+    margin: 10px 0;
+    color: red;
+}
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+    opacity: 1!important;
+}
+.tag-note {     
+    position: absolute;
+    left: 20px;
+}

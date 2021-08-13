@@ -1,0 +1,74 @@
+/*thi công*/
+#full-name {
+    font-size: 14px;
+    line-height: 27px;
+    font-weight: 300;
+    float:right;
+    width:70%;
+}
+.store-slide-rating i {
+    color: #F6BB42;
+    font-size: 12px;
+    display: inline;
+}
+.store-slide-rating i:first-child {
+    margin-left: 0;
+}
+.store-slide-rating {
+    margin: 0;
+}
+img.shadow-large {
+    float: left;
+    width: 20%;
+    border-radius: 50px;
+    height: 70px;
+    margin-left: 20px;
+}
+.description{
+    clear:both;
+    margin:0 20px
+}
+.button, .button-round{
+        margin: 0px 10px;
+    padding: 0px 50px;
+}
+.avatar {
+       object-fit: cover;
+    position: absolute;
+    bottom: -40px;
+    width: 130px;
+    height: 130px;
+    border: 1px solid #fff;
+    left: 50%;
+    transform: translate(-50%);
+}
+.construction-info img{
+    height:150px;
+    object-fit:cover;
+}
+.tab-info li {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom:0;
+    padding-bottom:10px
+}
+li.selected {
+    border-bottom: 2px solid #55a32a;
+}
+.tab-info li:not(.selected) a {
+    color: #000;
+}
+.tab-info{
+        text-align: left;
+        border-bottom: 1px solid #e3e3e3;
+}
+.review-avatar{
+    float: left;
+    width: 50px;
+    margin:0 20px;
+    border-radius: 50px;
+}
+#about_us .description {
+    margin: 0 auto!important;
+    max-height: inherit;
+}

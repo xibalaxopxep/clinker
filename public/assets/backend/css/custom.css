@@ -1,0 +1,385 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 26, 2019, 5:19:00 PM
+    Author     : Manh Hung
+*/
+
+.fab-menu-top-left, .fab-menu-top-right {
+    margin-top: -76px;
+}
+.sidebar-user-material-content > a > img {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+}
+label.required:after {
+    content: "*";
+    color: red;
+    padding-left: 5px;
+}
+.tokenfield .token .token-label {
+    max-width:initial !important;
+}
+samp,.close.fileinput-remove {/*.file-preview > .close,.file-actions*/
+    display: none;
+}
+.media-annotation {
+    display: inline-block;
+}
+.datatable-scroll-wrap {
+    overflow-x: initial;
+}
+input[readonly] {
+    cursor: not-allowed;
+}
+.file-preview-image {
+    max-width: 100%;
+    /*height: auto !important;*/
+    max-height: 250px;
+}
+.caption-h3 {
+    text-transform: uppercase;
+    font-size: 18px;
+    color: #484a4c;
+    display: inline-block;
+    margin: 10px 21px 20px;
+}
+.panel-data-icon {
+    width: 50px;
+    height: auto;
+    float: left;
+    padding: 27px 0;
+    text-align: center;
+    margin-left:5px
+}
+.panel-data-icon i{
+    width: 27px;
+    height: 27px;
+    font-size:25px;
+    color:white;
+}
+.panel-data-info {
+    width: calc(100% - 75px);
+    float: right;
+    padding-right: 5px;
+}
+.panel-data-info-title {
+    font-size: 13px;
+    margin-top: 11px;
+}
+.panel-data-info-number {
+    font-size: 20px;
+    font-weight: 500;
+}
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .1875rem;
+}
+.card-header:first-child {
+    border-radius: .125rem .125rem 0 0;
+}
+.card-img-actions .img-preview {
+    height: 81px;
+    width: 141px;
+}
+.mb-3 {
+    margin-bottom: 1.25rem!important;
+}
+.card-header .card-title {
+    margin-bottom: 0;
+    font-size: 20px;
+}
+.header-elements-inline{
+    display: flex;
+    justify-content: space-between;
+}
+.p0{
+    padding: 0px;
+}
+.info {
+    font-size: 36px;
+    font-weight: 500;
+    color: white;
+}
+.panel-data-info-title {
+    font-size: 15px;
+    margin-top: 11px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+.panel-data-icon i {
+    width: 27px;
+    height: 27px;
+    font-size: 43px;
+    color: white;
+    text-align: center;
+}
+.tile-stats.tile-red {
+    background: #f56954;
+}
+.tile-stats {
+    position: relative;
+    display: block;
+    background: #303641;
+    padding: 20px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    -webkit-border-radius: 5px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 5px;
+    -moz-background-clip: padding;
+    border-radius: 5px;
+    background-clip: padding-box;
+    -webkit-transition: all 300ms ease-in-out;
+    -moz-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+}
+.tile-stats.tile-red .icon {
+    color: rgba(0, 0, 0, 0.1);
+}
+.tile-stats .icon {
+    color: rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    z-index: 1;
+}
+.tile-stats .icon i {
+    font-size: 100px;
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
+}
+.tile-stats.tile-red .num, .tile-stats.tile-red h3, .tile-stats.tile-red p {
+    color: #fff;
+}
+.tile-stats .num {
+    font-size: 38px;
+    font-weight: bold;
+}
+.tile-stats .num, .tile-stats h3, .tile-stats p {
+    position: relative;
+    color: #fff;
+    z-index: 5;
+    margin: 0;
+    padding: 0;
+}
+.tile-stats.tile-blue {
+    background: #0073b7;
+}
+.tile-stats.tile-aqua {
+    background: #00c0ef;
+}
+.tile-stats.tile-green {
+    background: #00a65a;
+}
+.navigation > li ul li a {
+     padding: 10px 20px; 
+     padding-left: 25px; 
+    min-height: 40px;
+}
+.accordion-full .panel-title>a {
+    display: block;
+}
+.tile-stats h3 a{
+    color: inherit;
+}
+/*Title color dashboard statistic*/
+.tile-stats.tile-aqua a{
+    color:#fff;
+}
+.portlet.box.purple {
+    border: 1px solid #a57fb5;
+    border-top: 0;
+}
+.portlet > .portlet-body.purple, .portlet.purple {
+    background-color: #8e5fa2;
+}
+.portlet.box {
+    padding: 0px !important;
+}
+.portlet {
+    margin-top: 0px;
+    margin-bottom: 25px;
+    padding: 0px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+.portlet.box.purple > .portlet-title {
+    background-color: #8e5fa2;
+}
+.portlet.box > .portlet-title {
+    border-bottom: 0;
+    padding: 0 10px;
+    margin-bottom: 0;
+    color: #fff;
+}
+.portlet > .portlet-title {
+    border-bottom: 1px solid #eee;
+    padding: 0;
+    margin-bottom: 10px;
+    min-height: 41px;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    -ms-border-radius: 4px 4px 0 0;
+    -o-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+.portlet.box.purple > .portlet-title > .caption {
+    color: #FFFFFF;
+}
+.portlet.box > .portlet-title > .caption {
+    padding: 11px 0 9px 0;
+}
+.portlet > .portlet-title > .caption {
+    float: left;
+    display: inline-block;
+    font-size: 18px;
+    line-height: 18px;
+    padding: 10px 0;
+}
+.portlet.box.purple > .portlet-title > .caption > i {
+    color: #FFFFFF;
+}
+.portlet > .portlet-title > .caption > i {
+    float: left;
+    margin-top: 4px;
+    display: inline-block;
+    font-size: 13px;
+    margin-right: 5px;
+    color: #666;
+}
+.portlet.box > .portlet-body {
+    background-color: #fff;
+    padding: 10px;
+}
+.portlet > .portlet-body {
+    clear: both;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    -ms-border-radius: 0 0 4px 4px;
+    -o-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+}
+.static-info {
+    margin-bottom: 10px;
+}
+.static-info .name {
+    font-size: 14px;
+}
+.static-info .value {
+    font-size: 14px;
+    font-weight: 600;
+}
+.portlet.box.blue-hoki {
+    border: 1px solid #869ab3;
+    border-top: 0;
+}
+.portlet > .portlet-body.blue-hoki, .portlet.blue-hoki {
+    background-color: #67809F;
+}
+.portlet.box.blue-hoki > .portlet-title {
+    background-color: #67809F;
+}
+.portlet.box.blue-hoki > .portlet-title > .caption {
+    color: #FFFFFF;
+}
+.portlet.box > .portlet-title > .caption {
+    padding: 11px 0 9px 0;
+}
+.portlet > .portlet-title > .caption {
+    float: left;
+    display: inline-block;
+    font-size: 18px;
+    line-height: 18px;
+    padding: 10px 0;
+}
+.portlet.box.blue-hoki > .portlet-title > .caption > i {
+    color: #FFFFFF;
+}
+.portlet > .portlet-title > .caption > i {
+    float: left;
+    margin-top: 4px;
+    display: inline-block;
+    font-size: 13px;
+    margin-right: 5px;
+    color: #666;
+}
+.portlet.box > .portlet-title > .actions {
+    padding: 7px 0 5px 0;
+}
+.portlet > .portlet-title > .actions {
+    float: right;
+    display: inline-block;
+    padding: 6px 0;
+}
+.portlet > .portlet-title > .actions > .btn-group > .btn, .portlet > .portlet-title > .actions > .btn-group > .btn.btn-sm {
+    padding: 4px 10px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.green-haze.btn {
+    color: #FFFFFF;
+    background-color: #44b6ae;
+}
+.btn-circle {
+    border-radius: 25px !important;
+}
+.media{
+    margin-top: 0px;
+}
+.file-drop-zone {
+    min-height: 275px!important;
+    display: flow-root;
+    position: relative;
+}
+.file-actions {
+    margin-top: 0px!important;
+    border-top: 1px solid #eee;
+}
+.file-preview-frame, .file-preview-image, .file-preview-other {
+    height: 160px;
+    vertical-align: middle;
+}
+.file-preview-frame {
+    margin: 8px;
+    margin-right: 0;
+    height: 160px;
+    display: inline-table;
+    float: left;
+    vertical-align: middle;
+    
+}
+.file-caption-info{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+.file-footer-caption {
+    padding: 5px;
+}
+.cke_combopanel{
+    z-index: 10000000000011111!important;
+}
+.cke_panel{
+    z-index: 100000000000000000!important;
+}
