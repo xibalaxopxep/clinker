@@ -24,11 +24,9 @@ class BackendController  extends Controller
 
        public function index() {
         //$coupons = $this->couponRepo->all();
-            $product = Product::all()->count();
-            $news = News::all()->count();
-            $contact = Contact::all()->count();
+          
 
-        return view('backend/index',compact('product','news','contact'));
+        return view('backend/index');
     }
 
 

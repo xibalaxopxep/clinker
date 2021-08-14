@@ -48,12 +48,12 @@
                     <div class="icon"><i class="icon-bag"></i>
                     </div> 
                     <div class="num" data-start="0" data-end="3350" data-postfix="" data-duration="1500" data-delay="0">
-                        {{$product}}                        </div>
-                    <h3>Sản phẩm</h3>
+                        1                    </div>
+                    <h3>Dự án</h3>
                 </div>
             </a>
         </div>
-        <div class="col-sm-4">
+     <!--    <div class="col-sm-4">
             <a href="{{route('admin.bill.index1')}}">
                 <div class="tile-stats tile-aqua"> 
                     <div class="icon"><i class="icon-newspaper"></i>
@@ -75,7 +75,7 @@
                     <h3>Liên hệ</h3>
                 </div>
             </a>
-        </div>
+        </div> -->
     </div>
     <!-- Table header styling -->
    
