@@ -43,7 +43,7 @@
 
     <div class="row">
         <div class="col-sm-4">
-            <a href="{{route('admin.product.index')}}">
+            <a href="">
                 <div class="tile-stats tile-red"> 
                     <div class="icon"><i class="icon-bag"></i>
                     </div> 
@@ -53,29 +53,7 @@
                 </div>
             </a>
         </div>
-     <!--    <div class="col-sm-4">
-            <a href="{{route('admin.bill.index1')}}">
-                <div class="tile-stats tile-aqua"> 
-                    <div class="icon"><i class="icon-newspaper"></i>
-                    </div> 
-                    <div class="num" data-start="0" data-end="85" data-postfix="" data-duration="1500" data-delay="0">
-                        {{$news}}</div>
-                    <h3>Tin tức</h3>
-                </div>
-            </a>
-        </div>
-        <div class="col-sm-4">
-            <a href="{{route('admin.import.index')}}">
-                <div class="tile-stats tile-green"> 
-                    <div class="icon"><i class="icon-bubble-dots4"></i>
-                    </div> 
-                    <div class="num" data-start="0" data-end="0" data-postfix="" data-duration="1500" data-delay="0">
-                        {{$contact}}
-                    </div>
-                    <h3>Liên hệ</h3>
-                </div>
-            </a>
-        </div> -->
+    
     </div>
     <!-- Table header styling -->
    
