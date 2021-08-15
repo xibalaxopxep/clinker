@@ -127,37 +127,7 @@ public $successStatus = 200;
     } 
 
 
-      public function request(Request $request) 
-    { 
-        $user = Auth::user(); 
-        $validator = Validator::make($request->all(), [ 
-            // 'old_password' => 'required',
-            'friend_id' => 'required', 
-        ]);
-        if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
-                }
-        $input = $request->all();
-        $input['user_id'] = $user->id;
-        $input['type'] = 0;
-        Friend::create($input);   
-        return response()->json(['success' => 1], $this->successStatus); 
-    } 
+     
 
-     public function request(Request $request) 
-    { 
-        $user = Auth::user(); 
-        $validator = Validator::make($request->all(), [ 
-            // 'old_password' => 'required',
-            'type' => 'required', 
-        ]);
-        if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
-                }
-        $input = $request->type;
-        $input['user_id'] = $user->id;
-        $input['type'] = 0;
-        Friend::create($input);   
-        return response()->json(['success' => 1], $this->successStatus); 
-    } 
+  
 }
