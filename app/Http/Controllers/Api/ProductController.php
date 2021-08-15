@@ -9,7 +9,8 @@ use App\Repositories\ProductRepository;
 use Repositories\AttributeRepository;
 
 class ProductController extends Controller {
-
+    
+    
     public function __construct(ProductRepository $productRepo, AttributeRepository $attributeRepo) {
         $this->productRepo = $productRepo;
         $this->attributeRepo = $attributeRepo;

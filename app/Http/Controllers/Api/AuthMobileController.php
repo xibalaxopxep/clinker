@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request; 
 use App\Http\Controllers\Controller; 
 use Repositories\UserRepository;
@@ -126,5 +126,5 @@ public $successStatus = 200;
         return response()->json(['success' => 1], $this->successStatus); 
     } 
 
-    
+
 }
