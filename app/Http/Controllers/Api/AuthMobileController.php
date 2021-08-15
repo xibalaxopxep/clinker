@@ -126,8 +126,5 @@ public $successStatus = 200;
         return response()->json(['success' => 1], $this->successStatus); 
     } 
 
-
-     }
-
-  
+    
 }
