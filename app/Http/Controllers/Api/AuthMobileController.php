@@ -40,8 +40,9 @@ public $successStatus = 200;
             'password' => 'required|min:6|max:32', 
             'c_password' => 'required|same:password', 
         ]);
-        if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+        if ($validator->fails()) {
+                    $errorString = implode("\r\n",$validator->messages()->all());
+                    return $errorString;            
                 }
         $input = $request->except('c_password'); 
                 $input['password'] = bcrypt($input['password']); 
