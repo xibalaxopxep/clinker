@@ -18,9 +18,14 @@ public $successStatus = 200;
 
     public function login(Request $request){ 
         if(Auth::attempt(['email' => $request->email, 'password' =>  $request->password])){ 
-            $user = Auth::user(); 
+            $user = Auth::user();
+            if($user->status == 1){
             $success['token'] =  $user->createToken('Token')->accessToken; 
             return response()->json(['success' => $success,'user'=>$user], $this->successStatus); 
+            }
+            else{
+                return response()->json(['error'=>'Tài khoản chưa được xét duyệt']); 
+            }
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
@@ -45,6 +50,7 @@ public $successStatus = 200;
                     return response()->json(['error'=>$errorString]);           
                 }
         $input = $request->except('c_password'); 
+                $input['status'] = 0; 
                 $input['password'] = bcrypt($input['password']); 
                 $user = User::create($input); 
                 $success['token'] =  $user->createToken('Token')->accessToken; 
