@@ -142,6 +142,10 @@ return [
      */
     'attributes' => [
         'title' => 'Tiêu đề', 
+        'full_name' => 'Họ tên',
+         'username' => "Tài khoản",
+        'password' => 'Mật khẩu', 
+        'c_password' => 'Xác nhận mật khẩu', 
         'company_name' => 'Tên công ty', 
         'address' => 'Địa chỉ', 
         'hotline' => 'Hotline', 
