@@ -20,8 +20,8 @@ public $successStatus = 200;
         if(Auth::attempt(['email' => $request->email, 'password' =>  $request->password])){ 
             $user = Auth::user();
             if($user->status == 1){
-            $success['token'] =  $user->createToken('Token')->accessToken; 
-            return response()->json(['success' => $success,'user'=>$user], $this->successStatus); 
+        
+            return response()->json(['success' => 1 , 'token'=> $user->createToken('Token')->accessToken,'user'=>$user], $this->successStatus); 
             }
             else{
                 return response()->json(['error'=>'Tài khoản chưa được xét duyệt']); 
@@ -52,6 +52,7 @@ public $successStatus = 200;
         $input = $request->except('c_password'); 
                 $input['status'] = 0; 
                 $input['password'] = bcrypt($input['password']); 
+                $input['type'] = 3; 
                 $user = User::create($input); 
                 $success['token'] =  $user->createToken('Token')->accessToken; 
                 $success['name'] =  $user->full_name;
