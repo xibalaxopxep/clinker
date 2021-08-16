@@ -56,8 +56,8 @@ class ProjectController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        $record = DB::table('project')->where('id',$id)->first();
+    public function show(Request $request) {
+        $record = DB::table('project')->where('id',$request->id)->first();
         if($record){
            return response()->json(['success' => 1,'record'=>$record]); 
         }else{
@@ -66,10 +66,10 @@ class ProjectController extends Controller {
     }
 
 
-    public function update(Request $request, $id) {
-        $input = $request->all();
+    public function update(Request $request) {
+        $input = $request->except('id');
          $validator = Validator::make($request->all(), [ 
-            'code' => 'required|unique:project,code,' . $id . ',id',
+            'code' => 'required|unique:project,code,' . $request->id . ',id',
             'customer_buy' => 'required',
             'customer_sell' => 'required', 
             'contact_date' => 'required', 
@@ -81,7 +81,7 @@ class ProjectController extends Controller {
                     return response()->json(['error'=>$validator->errors()], 401);            
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        $project = DB::table('project')->where('id',$id)->update($input);
+        $project = DB::table('project')->where('id',$request->id)->update($input);
         if ($project) {
              return response()->json(['success' => 1]); 
         }else {
@@ -95,9 +95,9 @@ class ProjectController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy(Request $request) {
 
-        DB::table('project')->where('id',$id)->delete();
+        DB::table('project')->where('id',$request->id)->delete();
         return response()->json(['success' => 1]);
     }
 

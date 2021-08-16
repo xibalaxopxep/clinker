@@ -18,7 +18,7 @@ class User extends Authenticatable
     const ROLE_AUTHOR = 3;
     const ROLE_CONTRIBUTOR = 4;
 
-    const TYPE_ACCOUNTANT = 1;
+    const TYPE_ADMIN = 1;
     const TYPE_MANAGE = 2;
     const TYPE_EMPLOYEE = 3;
     const TYPE_CUSTOMER = 4;

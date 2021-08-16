@@ -3,26 +3,37 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Helpers\StringHelper;
+use App\Http\Controllers\Controller; 
+use Illuminate\Support\Facades\Auth; 
+use App\User;
+use App\Friend;
+use Validator;
 use DB;
-use Carbon\Carbon;
 
 
 class UserController extends Controller {
 
-   
- 
+     public function index(Request $request) {
+        $user = Auth::user(); 
+        //$friend_ids = Friend::where('user_id',$user->id)->where('type',0)->get()->pluck('friend_id');
+        $records = User::join('friend','friend.friend_id','=','user.id')->where('friend.user_id',$user->id)->whereIn('user.type',[2,4])->select('*','friend.id as request_id')->get();
+        if($records){
+        return response()->json(['success' => 1,'records'=> $records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
+        }
+    }
 
-     public function show(Request $request) {
-          $id = $request->id;
-          $record = DB::table('user')->where('id',$id)->first();
-          if($record){
-             return response()->json(['success'=>1, 'record'=>$record]);
-          }
-          else{
-              return response()->json(['success'=>0]);
-          }
+     public function findByEmail(Request $request) {
+        $user = Auth::user(); 
+        $record = User::join('friend','friend.friend_id','=','user.id')->where('email',$request->email)->where('friend.user_id',$user->id)->whereIn('user.type',[2,4])->first();
+    
+  
+        if($record){
+        return response()->json(['success' => 1,'records'=> $record]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
+        }
     }
 
 

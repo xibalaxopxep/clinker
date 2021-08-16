@@ -18,16 +18,16 @@ class ProjectDetailController extends Controller {
 
     public $successStatus = 200;
 
-    public function index($project_id) {
-        $records = DB::table('project_detail')->where('project_id',$project_id)->get();
+    public function index(Request $request) {
+        $records = DB::table('project_detail')->where('project_id',$$request->project_id)->get();
         return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
     }
 
 
 
-    public function store(Request $request,$project_id) {
-         $input = $request->all();
-         $validator = Validator::make($request->all(), [ 
+    public function store(Request $request) {
+         $input = $request->except('project_id');
+         $validator = Validator::make( $input, [ 
             'title' => 'required',
             'address_id' => 'required',
             'lighter_codes' => 'required', 
@@ -39,7 +39,7 @@ class ProjectDetailController extends Controller {
         }
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
-        $input['project_id'] = $project_id;
+        $input['project_id'] = $request->project_id;
         $project = DB::table('project_detail')->insert($input);
         if ($project) {
              return response()->json(['success' => 1]); 
@@ -54,8 +54,8 @@ class ProjectDetailController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        $record = DB::table('project_detail')->where('id',$id)->first();
+    public function show(Request $request) {
+        $record = DB::table('project_detail')->where('id',$request->id)->first();
         if($record){
            return response()->json(['success' => 1,'record'=>$record]); 
         }else{
@@ -64,9 +64,9 @@ class ProjectDetailController extends Controller {
     }
 
 
-    public function update(Request $request, $id) {
-         $input = $request->all();
-         $validator = Validator::make($request->all(), [ 
+    public function update(Request $request) {
+         $input = $request->except('id');
+         $validator = Validator::make($input, [ 
             'title' => 'required',
             'address_id' => 'required',
             'lighter_codes' => 'required', 
@@ -77,7 +77,7 @@ class ProjectDetailController extends Controller {
                     return response()->json(['error'=>$validator->errors()], 401);            
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        $project = DB::table('project_detail')->where('id',$id)->update($input);
+        $project = DB::table('project_detail')->where('id',$request->id)->update($input);
         if ($project) {
              return response()->json(['success' => 1]); 
         }else {
@@ -91,9 +91,9 @@ class ProjectDetailController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy(Request $request) {
 
-        DB::table('project_detail')->where('id',$id)->delete();
+        DB::table('project_detail')->where('id',$request->id)->delete();
         return response()->json(['success' => 1]);
     }
 
