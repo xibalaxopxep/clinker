@@ -42,7 +42,7 @@ public $successStatus = 200;
         ]);
         if ($validator->fails()) {
                     $errorString = implode("\r\n",$validator->messages()->all());
-                    return $errorString;            
+                    return response()->json(['error'=>$errorString]);           
                 }
         $input = $request->except('c_password'); 
                 $input['password'] = bcrypt($input['password']); 
