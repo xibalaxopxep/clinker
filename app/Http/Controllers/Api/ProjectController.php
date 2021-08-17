@@ -65,8 +65,9 @@ class ProjectController extends Controller {
      */
     public function show(Request $request) {
         $record = DB::table('project')->where('id',$request->id)->first();
+        $project_member = DB::table('project_member')->where('project_id',$request->id)->get();
         if($record){
-           return response()->json(['success' => 1,'record'=>$record]); 
+           return response()->json(['success' => 1,'record'=>$record,'project_member'=>$project_member]); 
         }else{
             return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
         }
