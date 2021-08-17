@@ -79,9 +79,9 @@ class ProjectController extends Controller {
 
 
     public function update(Request $request) {
-        $input = $request->except('id');
+        $input = $request->except(['id','project_member']);
          $validator = Validator::make($request->all(), [ 
-            'code' => 'required|unique:project,code,' . $request->id . ',id',
+            'code' => 'required',
             'customer_buy' => 'required',
             'customer_sell' => 'required', 
             'contact_date' => 'required', 
@@ -95,6 +95,13 @@ class ProjectController extends Controller {
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $project = DB::table('project')->where('id',$request->id)->update($input);
+        DB::table('project_member')->where('project_id',$request->id)->delete();
+        foreach($request->project_member as $member){
+            $data['project_id'] = $request->id;
+            $data['user_id'] = $member;
+            $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
+            DB::table('project_member')->insert($data);
+        }
         if ($project) {
              return response()->json(['success' => 1]); 
         }else {
@@ -119,6 +126,15 @@ class ProjectController extends Controller {
         $records = DB::table('payment')->get();
         return response()->json(['success' => 1,'records'=> $records]); 
     } 
+
+    public function findByStatus(Request $request){
+        $records = DB::table('project')->where('status',$request->status)->get();
+        if($records){
+             return response()->json(['success' => 1,'records'=> $records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]);
+        }
+    }
  
 
 }
