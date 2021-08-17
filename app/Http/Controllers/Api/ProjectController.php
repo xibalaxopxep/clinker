@@ -50,6 +50,12 @@ class ProjectController extends Controller {
             $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
             DB::table('project_member')->insert($data);
         }
+        foreach( explode(',',$request->lighter_codes) as $lighter){
+            $data1['project_id'] = $project;
+            $data1['lighter_code'] = $lighter;
+            DB::table('lighter_detail')->insert($data1);
+        }
+
         if ($project) {
              return response()->json(['success' => 1]); 
         }else {
@@ -101,6 +107,12 @@ class ProjectController extends Controller {
             $data['user_id'] = $member;
             $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
             DB::table('project_member')->insert($data);
+        }
+        DB::table('lighter_detail')->where('project_id',$request->id)->delete();
+        foreach( explode(',',$request->lighter_codes) as $lighter){
+            $data1['project_id'] = $request->id;
+            $data1['lighter_code'] = $lighter;
+            DB::table('lighter_detail')->insert($data1);
         }
         if ($project) {
              return response()->json(['success' => 1]); 
