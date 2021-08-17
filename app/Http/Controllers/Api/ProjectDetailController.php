@@ -35,7 +35,7 @@ class ProjectDetailController extends Controller {
             
         ]);
         if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+             return response()->json(['error'=>$validator->errors()], 401);            
         }
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
