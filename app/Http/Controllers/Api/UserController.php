@@ -26,7 +26,7 @@ class UserController extends Controller {
 
      public function findByEmail(Request $request) {
         $user = Auth::user(); 
-        $record = User::join('friend','friend.friend_id','=','user.id')->where('user.email', 'LIKE', '%' . $request->email . '%')->where('friend.user_id',$user->id)->whereIn('user.type',[2,4])->get();
+        $record = User::join('friend','friend.friend_id','=','user.id')->where('user.email', 'LIKE', '%' . $request->email . '%')->where('friend.user_id',$user->id)->whereIn('user.type',[2,4])->select('*', 'user.type as type')->get();
     
   
         if($record){
