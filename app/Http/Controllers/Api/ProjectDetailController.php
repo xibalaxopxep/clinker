@@ -71,7 +71,7 @@ class ProjectDetailController extends Controller {
             'title' => 'required',
             'address_id' => 'required',
             'lighter_codes' => 'required', 
-             'deadline' => 'required', 
+            'deadline' => 'required', 
             
         ]);
         if ($validator->fails()) { 

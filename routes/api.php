@@ -27,11 +27,12 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/user/list', ['as' => 'api.user.list', 'uses' => 'Api\AuthMobileController@list']);
     Route::post('/user/change-password', ['as' => 'api.user.change_password', 'uses' => 'Api\AuthMobileController@change_password']);
     Route::post('/user/request', ['as' => 'api.user.request', 'uses' => 'Api\AuthMobileController@request']);
-    Route::post('/user/response', ['as' => 'api.user.response', 'uses' => 'Api\AuthMobileController@response']);
+     Route::get('/user/findByEmail', ['as' => 'api.user.findByEmail', 'uses' => 'Api\AuthMobileController@findByEmail']);
+
     //Friend
     Route::get('/friend/index', ['as' => 'api.friend.list', 'uses' => 'Api\FriendController@index']);
     Route::get('/friend/request', ['as' => 'api.friend.request', 'uses' => 'Api\FriendController@request']);
-    Route::post('/friend/response/{request_id}', ['as' => 'api.friend.response', 'uses' => 'Api\FriendController@response']);
+    Route::post('/friend/response', ['as' => 'api.friend.response', 'uses' => 'Api\FriendController@response']);
     //dự án
     Route::post('/project/store', ['as' => 'api.project.store', 'uses' => 'Api\ProjectController@store']);
     Route::get('/project/index', ['as' => 'api.project.index', 'uses' => 'Api\ProjectController@index']);
@@ -39,13 +40,13 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/project/update', ['as' => 'api.project.update', 'uses' => 'Api\ProjectController@detail']);
     Route::delete('/project/destroy', ['as' => 'api.project.destroy', 'uses' => 'Api\ProjectController@destroy']);
     // chi tiết dự án
-    Route::post('/project-detail/store/{project_id}', ['as' => 'api.project_detail.store', 'uses' => 'Api\ProjectDetailController@store']);
+    Route::post('/project-detail/store', ['as' => 'api.project_detail.store', 'uses' => 'Api\ProjectDetailController@store']);
     Route::get('/project-detail/index', ['as' => 'api.project_detail.index', 'uses' => 'Api\ProjectDetailController@index']);
     Route::get('/project-detail/show', ['as' => 'api.project_detail.show', 'uses' => 'Api\ProjectDetailController@show']);
-    Route::post('/project-detail/update/{id}', ['as' => 'api.project_detail.update', 'uses' => 'Api\ProjectDetailController@update']);
+    Route::post('/project-detail/update', ['as' => 'api.project_detail.update', 'uses' => 'Api\ProjectDetailController@update']);
     //Nhân viên trong dự án
     Route::get('/project/user/index', ['as' => 'api.project_user.index', 'uses' => 'Api\UserController@index']);
-    Route::get('/project/user/findByEmail', ['as' => 'api.project_user.store', 'uses' => 'Api\UserController@findByEmail']);
+    Route::get('/project/user/findByEmail', ['as' => 'api.project_user.findByEmail', 'uses' => 'Api\UserController@findByEmail']);
 
     
 });

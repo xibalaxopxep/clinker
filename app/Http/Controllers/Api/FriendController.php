@@ -27,17 +27,19 @@ public $successStatus = 200;
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
 
-    public function response(Request $request, $request_id) 
+    public function response(Request $request) 
     { 
         $user = Auth::user(); 
         $validator = Validator::make($request->all(), [ 
             // 'old_password' => 'required',
-            'type' => 'required', 
+            'type' => 'required',
+            'request_id' => 'required'
         ]);
         if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+                    $errorString = implode("\r\n",$validator->messages()->all());
+                    return response()->json(['error'=>$errorString]);            
                 }
-        $record = Friend::find($request_id);
+        $record = Friend::find($request->request_id);
         if($request->type == 1 && $record->type == 0){
         
         if(!$record){
@@ -46,8 +48,9 @@ public $successStatus = 200;
         $record->update(['type'=>$request->type]);
         Friend::create(['user_id'=>$record->friend_id,'friend_id'=>$record->user_id]);
         return response()->json(['success' => 1], $this->successStatus); 
-        }elseif($request->type == -1){
-            Friend::find($request_id)->delete();
+        }
+        elseif($request->type == -1){
+            Friend::find($request->request_id)->delete();
             return response()->json(['success' => 1], $this->successStatus); 
         }
     }

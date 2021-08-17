@@ -126,7 +126,8 @@ public $successStatus = 200;
             'friend_id' => 'required', 
         ]);
         if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+                    $errorString = implode("\r\n",$validator->messages()->all());
+                    return response()->json(['error'=>$errorString]);             
                 }
         $input = $request->all();
         $input['user_id'] = $user->id;
@@ -134,6 +135,36 @@ public $successStatus = 200;
         Friend::create($input);   
         return response()->json(['success' => 1], $this->successStatus); 
     } 
+
+    // public function response(Request $request) 
+    // { 
+    //     $user = Auth::user();
+    //     $type = $ 
+    //     $validator = Validator::make($request->all(), [ 
+    //         // 'old_password' => 'required',
+    //         'type' => 'required', 
+    //     ]);
+    //     if ($validator->fails()) { 
+    //                $errorString = implode("\r\n",$validator->messages()->all());
+    //                return response()->json(['error'=>$errorString]);      
+    //             }
+    //     $input = $request->all();
+    //     $input['user_id'] = $user->id;
+    //     $input['type'] = 0;
+    //     Friend::create($input);   
+    //     return response()->json(['success' => 1], $this->successStatus); 
+    // } 
+
+
+     public function findByEmail(Request $request) {
+        $user = Auth::user(); 
+        $records = User::join('friend','friend.friend_id','=','user.id')->whereIn('email',$request->email)->where('friend.user_id',$user->id)->get();  
+        if($record){
+        return response()->json(['success' => 1, 'list_users'=>$records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
+        }
+    }
 
 
 }
