@@ -156,11 +156,12 @@ public $successStatus = 200;
     // } 
 
 
-     public function findByEmail(Request $request) {
+    public function findByEmail(Request $request) {
         $user = Auth::user(); 
-        $records = User::join('friend','friend.friend_id','=','user.id')->whereIn('email',$request->email)->where('friend.user_id',$user->id)->get();  
-        if($record){
-        return response()->json(['success' => 1, 'list_users'=>$records]); 
+        $record_friends = User::join('friend','friend.friend_id','=','user.id')->where('email', 'LIKE', '%' . $request->email . '%')->where('friend.user_id',$user->id)->select('*', 'user.id as id')->get();
+        $record_users = User::where('email', 'LIKE', '%' . $request->email . '%')->where('id','!=',$user->id)->whereNotIn('id',$record_friends->pluck('id'))->get();
+        if($record_users || $record_friends){
+        return response()->json(['success' => 1, 'is_friends'=>$record_friends ,'not_friends' => $record_users]); 
         }else{
             return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
         }
