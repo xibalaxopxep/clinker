@@ -105,8 +105,16 @@ class ProjectController extends Controller {
      */
     public function destroy(Request $request) {
         DB::table('project')->where('id',$request->id)->delete();
+        DB::table('project_member')->where('project_id',$request->id)->delete();
         return response()->json(['success' => 1]);
     }
+
+    public function payment(Request $request) 
+    {   
+        $records = DB::table('payment')->get();
+        return response()->json(['success' => 1,'records'=> $records]); 
+    } 
+ 
 
 }
 

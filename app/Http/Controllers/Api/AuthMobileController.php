@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use Validator;
 use App\Friend;
+use DB;
 
 class AuthMobileController extends Controller 
 {
@@ -65,9 +66,11 @@ public $successStatus = 200;
         return response()->json(['success' => 1, 'users'=>$users], $this->successStatus); 
     } 
    
-    public function detail() 
+    public function detail(Request $request) 
     { 
         $user = Auth::user(); 
+        $host = $request->getSchemeAndHttpHost();
+        $user['avatar'] = $host . $user->avatar;
         return response()->json(['success' => 1, 'user'=>$user], $this->successStatus); 
     } 
 
@@ -166,6 +169,36 @@ public $successStatus = 200;
             return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
         }
     }
+
+    public function upload_image(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'avatar' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            $errorString = implode("\r\n",$validator->messages()->all());
+            return response()->json(['error'=>$errorString]); 
+        }
+        $get_image = $request->file('avatar');
+        if($get_image){
+            $get_name_image = $get_image->getClientOriginalName();
+            $name_image = current(explode('.',$get_name_image));
+            $new_image =  $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
+            $get_image->move('img/user/',$new_image);
+            $data['avatar'] = '/img/user/'.$new_image;
+        }
+        DB::table('user')->where('id',Auth::user()->id)->update(['avatar'=>$data['avatar']]);
+        $avatar = DB::table('user')->where('id',Auth::user()->id)->pluck('avatar')->first();
+        if($avatar){
+             $host = $request->getSchemeAndHttpHost();
+            return response()->json(['success' => 1, 'avatar'=> $host . $avatar]); 
+        }else{
+            return response()->json(['error' => "Có lỗi trong quá trình xử lý"]); 
+        }
+    }
+
+
 
 
 }
