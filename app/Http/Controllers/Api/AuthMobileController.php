@@ -106,7 +106,8 @@ public $successStatus = 200;
             'c_password' => 'required|same:password', 
         ]);
         if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+                    $errorString = implode("\r\n",$validator->messages()->all());
+                    return response()->json(['error'=>$errorString]);                  
                 }
 
         // if($user->password != bcrypt($request->old_password)){

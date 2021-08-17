@@ -27,8 +27,8 @@ class ProjectController extends Controller {
 
 
     public function store(Request $request) {
-         $input = $request->all();
-         $validator = Validator::make($request->all(), [ 
+        $input = $request->except('project_member');
+        $validator = Validator::make($input, [ 
             'code' => 'required|unique:project',
             'customer_buy' => 'required',
             'customer_sell' => 'required', 
@@ -38,11 +38,18 @@ class ProjectController extends Controller {
             'ship_name' => 'required',
         ]);
         if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+                    $errorString = implode("\r\n",$validator->messages()->all());
+                    return response()->json(['error'=>$errorString]);                 
         }
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
-        $project = DB::table('project')->insert($input);
+        $project = DB::table('project')->insertGetId($input);
+        foreach($request->project_member as $member){
+            $data['project_id'] = $project;
+            $data['user_id'] = $member;
+            $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
+            DB::table('project_member')->insert($data);
+        }
         if ($project) {
              return response()->json(['success' => 1]); 
         }else {
@@ -78,7 +85,8 @@ class ProjectController extends Controller {
             'ship_name' => 'required',
         ]);
         if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+                    $errorString = implode("\r\n",$validator->messages()->all());
+                    return response()->json(['error'=>$errorString]);                      
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $project = DB::table('project')->where('id',$request->id)->update($input);

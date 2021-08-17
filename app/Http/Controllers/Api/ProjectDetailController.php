@@ -35,7 +35,8 @@ class ProjectDetailController extends Controller {
             
         ]);
         if ($validator->fails()) { 
-             return response()->json(['error'=>$validator->errors()], 401);            
+             $errorString = implode("\r\n",$validator->messages()->all());
+                    return response()->json(['error'=>$errorString]);                 
         }
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
@@ -74,7 +75,8 @@ class ProjectDetailController extends Controller {
             
         ]);
         if ($validator->fails()) { 
-                    return response()->json(['error'=>$validator->errors()], 401);            
+                $errorString = implode("\r\n",$validator->messages()->all());
+                return response()->json(['error'=>$errorString]);                 
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $project = DB::table('project_detail')->where('id',$request->id)->update($input);
