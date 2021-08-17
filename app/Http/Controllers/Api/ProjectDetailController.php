@@ -19,7 +19,7 @@ class ProjectDetailController extends Controller {
     public $successStatus = 200;
 
     public function index(Request $request) {
-        $records = DB::table('project_detail')->where('project_id',$$request->project_id)->get();
+        $records = DB::table('project_detail')->where('project_id',$request->project_id)->get();
         return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
     }
 
