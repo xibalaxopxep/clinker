@@ -44,12 +44,12 @@ class ProjectController extends Controller {
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
         $project = DB::table('project')->insertGetId($input);
-        // foreach($request->project_member as $member){
-        //     $data['project_id'] = $project;
-        //     $data['user_id'] = $member;
-        //     $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
-        //     DB::table('project_member')->insert($data);
-        // }
+        foreach($request->project_member as $member){
+            $data['project_id'] = $project;
+            $data['user_id'] = $member;
+            $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
+            DB::table('project_member')->insert($data);
+        }
         if ($project) {
              return response()->json(['success' => 1]); 
         }else {
