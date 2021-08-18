@@ -56,7 +56,7 @@ class ProjectController extends Controller {
             DB::table('project_member')->insert($data);
         }
         }
-        if($request->has("lighter_codes")){
+        if($request->has("lighter_codes") || $request->has("lighter_codes")!=null){
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $project;
             $data1['lighter_code'] = $lighter;
@@ -121,7 +121,7 @@ class ProjectController extends Controller {
         }
         }
         DB::table('lighter_detail')->where('project_id',$request->id)->delete();
-        if($request->has("lighter_codes")){
+        if($request->has("lighter_codes") || $request->has("lighter_codes")!=null){
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $request->id;
             $data1['lighter_code'] = $lighter;
