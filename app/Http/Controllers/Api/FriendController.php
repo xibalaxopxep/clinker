@@ -40,6 +40,7 @@ public $successStatus = 200;
                     return response()->json(['error'=>$errorString]);            
                 }
         $record = Friend::find($request->request_id);
+        if($record->type == 1){
         if($request->type == 1 && $record->type == 0){
         
         if(!$record){
@@ -52,6 +53,9 @@ public $successStatus = 200;
         elseif($request->type == -1){
             Friend::find($request->request_id)->delete();
             return response()->json(['success' => 1], $this->successStatus); 
+        }
+        }else{
+             return response()->json(['error' => "Người này đã là bạn bè"], $this->successStatus); 
         }
     }
 
