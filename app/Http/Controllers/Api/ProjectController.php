@@ -48,7 +48,7 @@ class ProjectController extends Controller {
             $input['status'] = 2;
         }
         $project = DB::table('project')->insertGetId($input);
-        if(count($request->project_member) >0){
+        if($request->has("project_member")){
         foreach($request->project_member as $member){
             $data['project_id'] = $project;
             $data['user_id'] = $member;
@@ -56,10 +56,12 @@ class ProjectController extends Controller {
             DB::table('project_member')->insert($data);
         }
         }
+        if($request->has("lighter_codes")){
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $project;
             $data1['lighter_code'] = $lighter;
             DB::table('lighter_detail')->insert($data1);
+        }
         }
 
         if ($project) {
@@ -110,7 +112,7 @@ class ProjectController extends Controller {
         }
         $project = DB::table('project')->where('id',$request->id)->update($input);
         DB::table('project_member')->where('project_id',$request->id)->delete();
-        if(count($request->project_member) >0){
+        if($request->has("project_member")){
         foreach($request->project_member as $member){
             $data['project_id'] = $request->id;
             $data['user_id'] = $member;
@@ -119,10 +121,12 @@ class ProjectController extends Controller {
         }
         }
         DB::table('lighter_detail')->where('project_id',$request->id)->delete();
+        if($request->has("lighter_codes")){
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $request->id;
             $data1['lighter_code'] = $lighter;
             DB::table('lighter_detail')->insert($data1);
+        }
         }
         if ($project) {
              return response()->json(['success' => 1]); 
