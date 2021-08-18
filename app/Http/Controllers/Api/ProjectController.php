@@ -34,8 +34,7 @@ class ProjectController extends Controller {
             'customer_sell' => 'required', 
             'contact_date' => 'required', 
             'contract-term' => 'required',
-            'address_id' => 'required',
-            'ship_name' => 'required',
+
         ]);
         if ($validator->fails()) { 
                     $errorString = implode("\r\n",$validator->messages()->all());
@@ -43,12 +42,19 @@ class ProjectController extends Controller {
         }
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
+        if($request->ship_name == null){
+            $input['status'] = 1;
+        }else{
+            $input['status'] = 2;
+        }
         $project = DB::table('project')->insertGetId($input);
+        if(count($request->project_member) >0){
         foreach($request->project_member as $member){
             $data['project_id'] = $project;
             $data['user_id'] = $member;
             $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
             DB::table('project_member')->insert($data);
+        }
         }
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $project;
@@ -92,21 +98,25 @@ class ProjectController extends Controller {
             'customer_sell' => 'required', 
             'contact_date' => 'required', 
             'contract-term' => 'required',
-            'address_id' => 'required',
-            'ship_name' => 'required',
+
         ]);
         if ($validator->fails()) { 
                     $errorString = implode("\r\n",$validator->messages()->all());
                     return response()->json(['error'=>$errorString]);                      
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
+         if($request->ship_name != null){
+            $input['status'] = 2;           
+        }
         $project = DB::table('project')->where('id',$request->id)->update($input);
         DB::table('project_member')->where('project_id',$request->id)->delete();
+        if(count($request->project_member) >0){
         foreach($request->project_member as $member){
             $data['project_id'] = $request->id;
             $data['user_id'] = $member;
             $data['type_role'] = DB::table('user')->where('id', $member)->pluck('type')->first();
             DB::table('project_member')->insert($data);
+        }
         }
         DB::table('lighter_detail')->where('project_id',$request->id)->delete();
         foreach( explode(',',$request->lighter_codes) as $lighter){
