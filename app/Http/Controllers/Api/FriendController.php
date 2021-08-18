@@ -47,7 +47,7 @@ public $successStatus = 200;
             return response()->json(['success' => "0"], 404); 
         }
         $record->update(['type'=>$request->type]);
-        Friend::create(['user_id'=>$record->friend_id,'friend_id'=>$record->user_id]);
+        Friend::create(['user_id'=>$record->friend_id,'friend_id'=>$record->user_id,'type'=>1]);
         return response()->json(['success' => 1], $this->successStatus); 
         }
         elseif($request->type == -1){
