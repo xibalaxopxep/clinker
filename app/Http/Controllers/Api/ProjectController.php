@@ -93,7 +93,7 @@ class ProjectController extends Controller {
 
 
     public function update(Request $request) {
-        $input = $request->except(['id','project_member']);
+        $input = $request->except(['id','project_member','lighter_codes','project_group']);
         $validator = Validator::make($request->all(), [ 
             'code' => 'required',
             'customer_buy' => 'required',
@@ -127,6 +127,14 @@ class ProjectController extends Controller {
             $data1['project_id'] = $request->id;
             $data1['lighter_code'] = $lighter;
             DB::table('lighter_detail')->insert($data1);
+        }
+        }
+        DB::table('project_group')->where('project_id',$request->id)->delete();
+        if($request->has("project_group") || $request->has("project_group")!=null){
+        foreach( explode(',',$request->project_group) as $group){
+            $data1['project_id'] = $request->id;
+            $data1['user_id'] = $group;
+            DB::table('project_group')->insert($data1);
         }
         }
         if ($project) {
@@ -163,8 +171,17 @@ class ProjectController extends Controller {
         }
     }
 
-      public function getStatus(Request $request){
+    public function getStatus(Request $request){
         $records = DB::table('status')->get();
+        if($records){
+             return response()->json(['success' => 1,'records'=> $records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]);
+        }
+    }
+
+    public function listLighters(Request $request){
+        $records = DB::table('lighter_detail')->where('project_id', $request->project_id)->get();
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
         }else{

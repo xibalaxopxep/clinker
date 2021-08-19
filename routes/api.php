@@ -36,6 +36,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/project/destroy', ['as' => 'api.project.destroy', 'uses' => 'Api\ProjectController@destroy']);
     Route::get('/project/findByStatus', ['as' => 'api.project.findByStatus', 'uses' => 'Api\ProjectController@findByStatus']);
     Route::get('/project/getStatus', ['as' => 'api.project.getStatus', 'uses' => 'Api\ProjectController@getStatus']);
+    Route::get('/project/listLighters', ['as' => 'api.project.listLighters', 'uses' => 'Api\ProjectController@listLighters']);
     // chi tiết dự án
     Route::post('/project-detail/store', ['as' => 'api.project_detail.store', 'uses' => 'Api\ProjectDetailController@store']);
     Route::get('/project-detail/index', ['as' => 'api.project_detail.index', 'uses' => 'Api\ProjectDetailController@index']);
@@ -44,6 +45,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     //Nhân viên trong dự án
     Route::get('/project/user/index', ['as' => 'api.project_user.index', 'uses' => 'Api\UserController@index']);
     Route::get('/project/user/findByEmail', ['as' => 'api.project_user.findByEmail', 'uses' => 'Api\UserController@findByEmail']);
+    Route::get('/project/user/member', ['as' => 'api.project_user.member', 'uses' => 'Api\UserController@member']);
 
     
 });
