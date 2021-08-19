@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/project/update', ['as' => 'api.project.update', 'uses' => 'Api\ProjectController@update']);
     Route::post('/project/destroy', ['as' => 'api.project.destroy', 'uses' => 'Api\ProjectController@destroy']);
     Route::get('/project/findByStatus', ['as' => 'api.project.findByStatus', 'uses' => 'Api\ProjectController@findByStatus']);
+    Route::get('/project/getStatus', ['as' => 'api.project.getStatus', 'uses' => 'Api\ProjectController@getStatus']);
     // chi tiết dự án
     Route::post('/project-detail/store', ['as' => 'api.project_detail.store', 'uses' => 'Api\ProjectDetailController@store']);
     Route::get('/project-detail/index', ['as' => 'api.project_detail.index', 'uses' => 'Api\ProjectDetailController@index']);

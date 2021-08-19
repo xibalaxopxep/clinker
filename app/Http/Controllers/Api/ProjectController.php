@@ -43,9 +43,9 @@ class ProjectController extends Controller {
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
         if($request->ship_name == null){
-            $input['status'] = 1;
+            $input['status_id'] = 1;
         }else{
-            $input['status'] = 2;
+            $input['status_id'] = 2;
         }
         $project = DB::table('project')->insertGetId($input);
         if($request->has("project_member")){
@@ -107,9 +107,9 @@ class ProjectController extends Controller {
                     return response()->json(['error'=>$errorString]);                      
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        if($request->ship_name != null){
-            $input['status'] = 2;           
-        }
+        // if($request->ship_name != null){
+        //     $input['status_id'] = 2;           
+        // }
         
         $project = DB::table('project')->where('id',$request->id)->update($input);
         DB::table('project_member')->where('project_id',$request->id)->delete();
@@ -156,6 +156,15 @@ class ProjectController extends Controller {
 
     public function findByStatus(Request $request){
         $records = DB::table('project')->where('status',$request->status)->get();
+        if($records){
+             return response()->json(['success' => 1,'records'=> $records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]);
+        }
+    }
+
+      public function getStatus(Request $request){
+        $records = DB::table('status')->get();
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
         }else{
