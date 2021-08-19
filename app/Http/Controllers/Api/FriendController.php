@@ -27,6 +27,16 @@ public $successStatus = 200;
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
 
+    
+
+     public function requested(Request $request) 
+    { 
+        $user = Auth::user(); 
+        $friend_ids = Friend::where('friend_id',$user->id)->where('type',0)->get()->pluck('friend_id');
+        $records = User::join('friend','friend.friend_id','=','user.id')->whereIn('user.id',$friend_ids)->select('*','friend.id as request_id')->get();
+        return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
+    } 
+
     public function response(Request $request) 
     { 
         $user = Auth::user(); 
