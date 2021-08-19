@@ -94,7 +94,7 @@ class ProjectController extends Controller {
 
     public function update(Request $request) {
         $input = $request->except(['id','project_member']);
-         $validator = Validator::make($request->all(), [ 
+        $validator = Validator::make($request->all(), [ 
             'code' => 'required',
             'customer_buy' => 'required',
             'customer_sell' => 'required', 
@@ -107,9 +107,10 @@ class ProjectController extends Controller {
                     return response()->json(['error'=>$errorString]);                      
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-         if($request->ship_name != null){
+        if($request->ship_name != null){
             $input['status'] = 2;           
         }
+        
         $project = DB::table('project')->where('id',$request->id)->update($input);
         DB::table('project_member')->where('project_id',$request->id)->delete();
         if($request->has("project_member")){
