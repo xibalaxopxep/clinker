@@ -43,9 +43,9 @@ class ProjectController extends Controller {
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
         if($request->ship_name == null){
-            $input['status_id'] = 1;
+            $input['status'] = 1;
         }else{
-            $input['status_id'] = 2;
+            $input['status'] = 2;
         }
         $project = DB::table('project')->insertGetId($input);
         if($request->has("project_member")){
@@ -84,6 +84,14 @@ class ProjectController extends Controller {
         foreach($project_member as $key => $member){
              $project_member[$key]->avatar = $host . $member->avatar;
         }
+        $address_arr = explode(',',$record->address_id);
+        $arr_tmp = array();
+        foreach ($address_arr as $key => $item)
+        {
+            $address = DB::table('address')->where('id',$item)->first();
+            array_push($arr_tmp,$address);
+        }
+        $record->address = $arr_tmp;
         if($record){
            return response()->json(['success' => 1,'record'=>$record,'project_member'=>$project_member]); 
         }else{
@@ -107,9 +115,11 @@ class ProjectController extends Controller {
                     return response()->json(['error'=>$errorString]);                      
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        // if($request->ship_name != null){
-        //     $input['status_id'] = 2;           
-        // }
+        if($request->ship_name == null){
+            $input['status'] = 1;
+        }else{
+            $input['status'] = 2;
+        }
         
         $project = DB::table('project')->where('id',$request->id)->update($input);
         DB::table('project_member')->where('project_id',$request->id)->delete();
@@ -127,7 +137,7 @@ class ProjectController extends Controller {
             $data1['project_id'] = $request->id;
             $data1['lighter_code'] = $lighter;
             DB::table('lighter_detail')->insert($data1);
-        }
+        } 
         }
         DB::table('project_group')->where('project_id',$request->id)->delete();
         if($request->has("project_group") || $request->has("project_group")!=null){
