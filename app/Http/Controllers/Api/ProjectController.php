@@ -93,7 +93,7 @@ class ProjectController extends Controller {
 
 
     public function update(Request $request) {
-        $input = $request->except(['id','project_member','lighter_codes','project_group']);
+        $input = $request->except(['id','project_member','lighter_codes','project_group','manage_id']);
         $validator = Validator::make($request->all(), [ 
             'code' => 'required',
             'customer_buy' => 'required',
@@ -107,9 +107,11 @@ class ProjectController extends Controller {
                     return response()->json(['error'=>$errorString]);                      
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
-        // if($request->ship_name != null){
-        //     $input['status_id'] = 2;           
-        // }
+        if($request->ship_name == null){
+            $input['status_id'] = 1;
+        }else{
+            $input['status_id'] = 2;
+        }
         
         $project = DB::table('project')->where('id',$request->id)->update($input);
         DB::table('project_member')->where('project_id',$request->id)->delete();
@@ -129,13 +131,23 @@ class ProjectController extends Controller {
             DB::table('lighter_detail')->insert($data1);
         }
         }
+
         DB::table('project_group')->where('project_id',$request->id)->delete();
         if($request->has("project_group") || $request->has("project_group")!=null){
-        foreach( explode(',',$request->project_group) as $group){
-            $data1['project_id'] = $request->id;
-            $data1['user_id'] = $group;
-            DB::table('project_group')->insert($data1);
-        }
+        foreach($request->project_group as $key => $group){
+            foreach ($group as  $gr) {
+                $data2['project_id'] = $request->id;
+                $data2['group_name'] = $key;
+                $data2['user_id'] = $gr;
+                if($request->manage_id[$key] == $gr){
+                    $data2['is_manage'] = 1;
+                }else{
+                    $data2['is_manage'] = 0;
+                }
+                DB::table('project_group')->insert($data2);
+            }
+             
+            }  
         }
         if ($project) {
              return response()->json(['success' => 1]); 
@@ -188,6 +200,17 @@ class ProjectController extends Controller {
             return response()->json(['error' => "Không tìm thấy dữ liệu"]);
         }
     }
+
+       public function getGroup(Request $request){
+        $records = DB::table('project_group')->where('project_id', $request->project_id)->get()->groupBy('project_id');
+        if($records){
+             return response()->json(['success' => 1,'records'=> $records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]);
+        }
+    }
+
+     
  
 
 }
