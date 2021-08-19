@@ -141,9 +141,9 @@ class ProjectController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request) {
-        DB::table('project')->where('id',$request->id)->delete();
-        DB::table('project_member')->where('project_id',$request->id)->delete();
+    public function destroy($id) {
+        DB::table('project')->where('id',$id)->delete();
+        DB::table('project_member')->where('project_id',$id)->delete();
         return response()->json(['success' => 1]);
     }
 
