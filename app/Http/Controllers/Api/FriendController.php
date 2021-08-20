@@ -50,22 +50,20 @@ public $successStatus = 200;
                     return response()->json(['error'=>$errorString]);            
                 }
         $record = Friend::find($request->request_id);
-        if($record->type == 1){
-        if($request->type == 1 && $record->type == 0){
-        
         if(!$record){
             return response()->json(['success' => "0"], 404); 
         }
-        $record->update(['type'=>$request->type]);
-        Friend::create(['user_id'=>$record->friend_id,'friend_id'=>$record->user_id,'type'=>1]);
-        return response()->json(['success' => 1], $this->successStatus); 
-        }
-        elseif($request->type == -1){
-            Friend::find($request->request_id)->delete();
-            return response()->json(['success' => 1], $this->successStatus); 
-        }
-        }else{
+        if($record->type == 1){
              return response()->json(['error' => "Người này đã là bạn bè"], $this->successStatus); 
+        }
+        else{
+            if($request->type == 1){
+                $record->update(['type'=>$request->type]);
+                Friend::create(['user_id'=>$record->friend_id,'friend_id'=>$record->user_id,'type'=>1]);
+            }
+            else{
+                Friend::find($request->request_id)->delete();
+            }
         }
     }
 

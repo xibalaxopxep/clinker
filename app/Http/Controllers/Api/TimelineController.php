@@ -38,6 +38,7 @@ class TimelineController extends Controller {
              $errorString = implode("\r\n",$validator->messages()->all());
                     return response()->json(['error'=>$errorString]);                 
         }
+        $input['status'] = 1;
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
         $input['project_id'] = $request->project_id;
