@@ -6,12 +6,13 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Friend;
 use Validator;
+use DB;
 
 class FriendController extends Controller 
 {
 public $successStatus = 200;
 
-       public function index(Request $request) 
+    public function index(Request $request) 
     { 
         $user = Auth::user(); 
         $friend_ids = Friend::where('user_id',$user->id)->where('type',1)->get()->pluck('friend_id');
@@ -22,18 +23,17 @@ public $successStatus = 200;
     public function request(Request $request) 
     { 
         $user = Auth::user(); 
-        $friend_ids = Friend::where('user_id',$user->id)->where('type',0)->get()->pluck('friend_id');
-        $records = User::join('friend','friend.friend_id','=','user.id')->whereIn('user.id',$friend_ids)->select('*','friend.id as request_id')->get();
+        $friend_ids = Friend::where('user_id',$user->id)->where('type','=',0)->get()->pluck('friend_id');
+        $records = User::join('friend','friend.friend_id','=','user.id')->where('friend.user_id',$user->id)->where('friend.type',0)->whereIn('user.id',$friend_ids)->select('*','friend.id as request_id','friend.type as type')->get();
+        return $records;
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
 
     
-
      public function requested(Request $request) 
     { 
         $user = Auth::user(); 
-        $friend_ids = Friend::where('friend_id',$user->id)->where('type',0)->get()->pluck('friend_id');
-        $records = User::join('friend','friend.friend_id','=','user.id')->whereIn('user.id',$friend_ids)->select('*','friend.id as request_id')->get();
+        $records = User::join('friend','friend.friend_id','=','user.id')->where('friend.friend_id',$user->id)->where('friend.type',0)->select('*','friend.id as request_id','friend.type as type')->get();
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
 

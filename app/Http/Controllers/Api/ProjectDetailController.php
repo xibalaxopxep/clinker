@@ -84,8 +84,6 @@ class ProjectDetailController extends Controller {
         return response()->json(['success' => 1,'records'=>$records]); 
     }
 
-
-
    
     public function show(Request $request) {
         $record = DB::table('project_detail')->where('id',$request->id)->first();
