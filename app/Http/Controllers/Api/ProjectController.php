@@ -98,7 +98,7 @@ class ProjectController extends Controller {
 
 
     public function update(Request $request) {
-        $input = $request->except(['id','project_member','lighter_codes','project_group','manage_id']);
+        $input = $request->except(['id','project_member','project_group','manage_id']);
         // $validator = Validator::make($request->all(), [ 
         //     'code' => 'required',
         //     'customer_buy' => 'required',
@@ -118,6 +118,7 @@ class ProjectController extends Controller {
             $input['status_id'] = 2;
 
         }
+        return $input;
         
         $project = DB::table('project')->where('id',$request->id)->update($input);
         if($request->has("project_member")){
