@@ -70,8 +70,7 @@ class ProjectDetailController extends Controller {
 
     public function index(Request $request) {
         $host = $request->getSchemeAndHttpHost();
-        $records = DB::table('project_detail')->where('project_id',$request->project_id)->get();
-      
+        $records = DB::table('project_detail')->where('project_id',$request->project_id)->orderBy('deadline','asc')->get();
         foreach($records as $key => $record){
             $image = array();
             if($record->images != null){

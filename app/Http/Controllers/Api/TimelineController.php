@@ -19,7 +19,7 @@ class TimelineController extends Controller {
     public $successStatus = 200;
 
     public function index(Request $request) {
-        $records = DB::table('project_detail')->where('project_id',$request->project_id)->get();
+        $records = DB::table('project_detail')->where('project_id',$request->project_id)->orderBy('deadline','asc')->get();
         return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
     }
 
@@ -74,10 +74,10 @@ class TimelineController extends Controller {
         //     'group_name' => 'required', 
         //     'deadline'=> "required",
         // ]);
-        if ($validator->fails()) { 
-             $errorString = implode("\r\n",$validator->messages()->all());
-                    return response()->json(['error'=>$errorString]);                 
-        }
+        // if ($validator->fails()) { 
+        //      $errorString = implode("\r\n",$validator->messages()->all());
+        //             return response()->json(['error'=>$errorString]);                 
+        // }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
         $project = DB::table('project_detail')->where('id',$request->id)->update($input);
