@@ -69,7 +69,19 @@ class ProjectDetailController extends Controller {
     } 
 
     public function index(Request $request) {
+        $host = $request->getSchemeAndHttpHost();
         $records = DB::table('project_detail')->where('project_id',$request->project_id)->get();
+
+        foreach($records as $key => $record){
+            $image = array();
+            if($record->images != null){
+                foreach( explode(',',$record->images) as $rd ){
+                     $image[] =  $host.$rd;
+                }
+                $records[$key]->images = $image;
+            }
+        }
+        return $records;
         return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
     }
 
@@ -89,19 +101,19 @@ class ProjectDetailController extends Controller {
     public function update(Request $request) {
          $input = $request->except('id');
          $record = DB::table('project_detail')->where('id',$request->id)->first();
-         $validator = Validator::make($input, [ 
-            'quantity' => 'required',
-            'real_quantity' => 'required', 
-            'cont_number' => 'required',
-            'product_quantity' => 'required',
-            'weather_id' => 'required',
-            'reporting_time' => 'required',
-            'status_content' =>'required',
-        ]);
-        if ($validator->fails()) { 
-                $errorString = implode("\r\n",$validator->messages()->all());
-                return response()->json(['error'=>$errorString]);                 
-        }
+        //  $validator = Validator::make($input, [ 
+        //     'quantity' => 'required',
+        //     'real_quantity' => 'required', 
+        //     'cont_number' => 'required',
+        //     'product_quantity' => 'required',
+        //     'weather_id' => 'required',
+        //     'reporting_time' => 'required',
+        //     'status_content' =>'required',
+        // ]);
+        // if ($validator->fails()) { 
+        //         $errorString = implode("\r\n",$validator->messages()->all());
+        //         return response()->json(['error'=>$errorString]);                 
+        // }
 
      
         $to = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $record->deadline);
