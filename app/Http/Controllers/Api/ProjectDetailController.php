@@ -71,7 +71,7 @@ class ProjectDetailController extends Controller {
     public function index(Request $request) {
         $host = $request->getSchemeAndHttpHost();
         $records = DB::table('project_detail')->where('project_id',$request->project_id)->get();
-
+      
         foreach($records as $key => $record){
             $image = array();
             if($record->images != null){
@@ -81,8 +81,7 @@ class ProjectDetailController extends Controller {
                 $records[$key]->images = $image;
             }
         }
-        return $records;
-        return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
+        return response()->json(['success' => 1,'records'=>$records]); 
     }
 
 
