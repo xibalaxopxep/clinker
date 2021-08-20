@@ -56,7 +56,9 @@ class ProjectController extends Controller {
             DB::table('project_member')->insert($data);
         }
         }
-        if($request->has("lighter_codes") || $request->has("lighter_codes")!=null){
+
+
+        if($request->has("lighter_codes") || $request->has("lighter_codes") != null){
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $project;
             $data1['lighter_code'] = $lighter;
@@ -71,12 +73,7 @@ class ProjectController extends Controller {
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Request $request) {
         $record = DB::table('project')->where('id',$request->id)->first();
         $project_member = DB::table('project_member')->join('user','user.id','=','project_member.user_id')->where('project_member.project_id',$request->id)->get();
@@ -123,6 +120,7 @@ class ProjectController extends Controller {
         }
         
         $project = DB::table('project')->where('id',$request->id)->update($input);
+        return $project;
         if($request->has("project_member")){
         DB::table('project_member')->where('project_id',$request->id)->delete();
         foreach($request->project_member as $member){

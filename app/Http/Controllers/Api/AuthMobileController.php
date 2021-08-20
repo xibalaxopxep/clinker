@@ -18,8 +18,10 @@ public $successStatus = 200;
     }    
 
     public function login(Request $request){ 
+        $host = $request->getSchemeAndHttpHost();
         if(Auth::attempt(['email' => $request->email, 'password' =>  $request->password])){ 
             $user = Auth::user();
+            $user->avatar = $host.$user->avatar;
             if($user->status == 1){
         
             return response()->json(['success' => 1 , 'token'=> $user->createToken('Token')->accessToken,'user'=>$user], $this->successStatus); 
