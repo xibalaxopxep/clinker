@@ -123,8 +123,8 @@ class ProjectController extends Controller {
         }
         
         $project = DB::table('project')->where('id',$request->id)->update($input);
-        DB::table('project_member')->where('project_id',$request->id)->delete();
         if($request->has("project_member")){
+        DB::table('project_member')->where('project_id',$request->id)->delete();
         foreach($request->project_member as $member){
             $data['project_id'] = $request->id;
             $data['user_id'] = $member;
@@ -132,19 +132,21 @@ class ProjectController extends Controller {
             DB::table('project_member')->insert($data);
         }
         }
-        DB::table('lighter_detail')->where('project_id',$request->id)->delete();
+        
         if($request->has("lighter_codes") || $request->has("lighter_codes")!=null){
+        DB::table('lighter_detail')->where('project_id',$request->id)->delete();
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $request->id;
             $data1['lighter_code'] = $lighter;
             DB::table('lighter_detail')->insert($data1);
         } 
         }
-
+        if($request->has("project_group") || $request->has("project_group") != null){
         DB::table('project_group')->where('project_id',$request->id)->delete();
-        if($request->has("project_group") || $request->has("project_group")!=null){
+        $index = 0;
         foreach($request->project_group as $key => $group){
-            foreach ($group as  $gr) {
+
+            foreach ($group as $key1 => $gr) {
                 $data2['project_id'] = $request->id;
                 $data2['group_name'] = $key;
                 $data2['user_id'] = $gr;
@@ -153,9 +155,18 @@ class ProjectController extends Controller {
                 }else{
                     $data2['is_manage'] = 0;
                 }
-                DB::table('project_group')->insert($data2);
-            }
-             
+                if($index >0){
+                $record = DB::table('project_group')->where('project_id',$request->id)->get()->pluck('user_id')->toArray();
+                if (in_array($gr, $record) == false ) {
+                     DB::table('project_group')->insert($data2);
+                }
+                }
+                else{
+                    DB::table('project_group')->insert($data2);
+                }
+            
+             }
+             $index++;
             }  
         }
         if ($project) {
