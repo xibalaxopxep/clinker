@@ -116,7 +116,6 @@ class ProjectController extends Controller {
             $input['status_id'] = 1;
         }else{
             $input['status_id'] = 2;
-
         }
         $project = DB::table('project')->where('id',$request->id)->update($input);
         if($request->has("project_member")){
