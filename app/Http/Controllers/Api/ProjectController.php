@@ -211,7 +211,7 @@ class ProjectController extends Controller {
     }
 
        public function getGroup(Request $request){
-        $records = DB::table('project_group')->where('project_id', $request->project_id)->get()->groupBy('project_id');
+        $records = DB::table('project_group')->where('project_id', $request->project_id)->get()->groupBy('group_name');
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
         }else{

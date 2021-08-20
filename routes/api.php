@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/project-detail/getTypeWork', ['as' => 'api.project_detail.getTypeWork', 'uses' => 'Api\ProjectDetailController@getTypeWork']);
     Route::post('/project-detail/uploadImage', ['as' => 'api.project_detail.uploadImage', 'uses' => 'Api\ProjectDetailController@uploadImage']);
     Route::post('/project-detail/deleteImage', ['as' => 'api.project_detail.deleteImage', 'uses' => 'Api\ProjectDetailController@deleteImage']);
+    Route::post('/project-detail/deleteImage', ['as' => 'api.project_detail.deleteImage', 'uses' => 'Api\ProjectDetailController@deleteImage']);
     //Nhân viên trong dự án
     Route::get('/project/user/index', ['as' => 'api.project_user.index', 'uses' => 'Api\UserController@index']);
     Route::get('/project/user/findByEmail', ['as' => 'api.project_user.findByEmail', 'uses' => 'Api\UserController@findByEmail']);
