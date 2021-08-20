@@ -118,8 +118,6 @@ class ProjectController extends Controller {
             $input['status_id'] = 2;
 
         }
-        return $input;
-        
         $project = DB::table('project')->where('id',$request->id)->update($input);
         if($request->has("project_member")){
         DB::table('project_member')->where('project_id',$request->id)->delete();
