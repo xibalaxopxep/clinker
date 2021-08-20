@@ -102,18 +102,18 @@ class ProjectController extends Controller {
 
     public function update(Request $request) {
         $input = $request->except(['id','project_member','lighter_codes','project_group','manage_id']);
-        $validator = Validator::make($request->all(), [ 
-            'code' => 'required',
-            'customer_buy' => 'required',
-            'customer_sell' => 'required', 
-            'contact_date' => 'required', 
-            'contract-term' => 'required',
+        // $validator = Validator::make($request->all(), [ 
+        //     'code' => 'required',
+        //     'customer_buy' => 'required',
+        //     'customer_sell' => 'required', 
+        //     'contact_date' => 'required', 
+        //     'contract-term' => 'required',
 
-        ]);
-        if ($validator->fails()) { 
-                    $errorString = implode("\r\n",$validator->messages()->all());
-                    return response()->json(['error'=>$errorString]);                      
-        }
+        // ]);
+        // if ($validator->fails()) { 
+        //             $errorString = implode("\r\n",$validator->messages()->all());
+        //             return response()->json(['error'=>$errorString]);                      
+        // }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         if($request->ship_name == null){
             $input['status_id'] = 1;
