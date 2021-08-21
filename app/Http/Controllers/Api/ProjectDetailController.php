@@ -102,7 +102,7 @@ class ProjectDetailController extends Controller {
         }
         $lighters = DB::table('lighter_detail')->get();
         foreach ($lighters as $lighter) {
-            if($lighter->id == $record->lighter_id){
+            if($lighter->lighter_code == $record->lighter_code){
                 $record->lighter_name = $lighter->lighter_code;
                 break;
             }
