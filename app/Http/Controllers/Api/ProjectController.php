@@ -21,9 +21,18 @@ class ProjectController extends Controller {
 
     public function index() {
         $user = Auth::user();
-        if($user->type == 1)
-        $records = DB::table('project')->get();
-        return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
+            if($user->type == 1){
+                $records = DB::table('project')->get();
+                return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
+            }
+            elseif($user->type == 2 || $user->type == 4){
+                $project_id = DB::table('project_member')->where('user_id',$user->id)->get()->pluck('project_id');
+                $records = DB::table('project')->whereIn('id',$project_id)->get();
+                return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
+            }
+            else{
+                return response()->json(['success' => 0]); 
+            }
     }
 
 

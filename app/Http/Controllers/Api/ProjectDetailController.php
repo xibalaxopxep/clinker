@@ -80,10 +80,9 @@ class ProjectDetailController extends Controller {
                 $records[$key]->images = $image;
             }
         }
-        // foreach($records as $key => $record){
-        //     $groups = DB::table('group')->where('group_name',$record->group_name)->get();
-        //     $records[$key]->group_name = $groups;
-        // }
+        if($request->isGop == 1){
+             $records= $records->groupBy('deadline');
+        }
 
         return response()->json(['success' => 1,'records'=>$records]); 
     }
@@ -92,6 +91,8 @@ class ProjectDetailController extends Controller {
     public function show(Request $request) {
         $record = DB::table('project_detail')->where('id',$request->id)->first();
         $works = DB::table('type_work')->get();
+        $record->work_name = "";
+        $record->lighter_detail = "";
         $lighter_details = DB::table('type_work')->get();
         foreach ($works as $work) {
             if($work->id == $record->work_id){
@@ -99,6 +100,7 @@ class ProjectDetailController extends Controller {
                 break;
             }
         }
+
         return $record->work_name;
 
         $lighters = DB::table('lighter_detail')->get();
