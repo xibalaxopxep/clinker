@@ -21,6 +21,7 @@ class ProjectController extends Controller {
 
     public function index() {
         $user = Auth::user();
+        if($user->type == 1)
         $records = DB::table('project')->get();
         return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
     }
@@ -44,9 +45,9 @@ class ProjectController extends Controller {
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
         if($request->ship_name == null){
-            $input['status'] = 1;
+            $input['status_id'] = 1;
         }else{
-            $input['status'] = 2;
+            $input['status_id'] = 2;
         }
         $project = DB::table('project')->insertGetId($input);
         if($request->has("project_member")){

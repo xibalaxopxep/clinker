@@ -60,7 +60,7 @@ public $successStatus = 200;
             if($request->type == 1){
                 $record->update(['type'=>$request->type]);
                 Friend::create(['user_id'=>$record->friend_id,'friend_id'=>$record->user_id,'type'=>1]);
-                 return response()->json(["success" => 1]); 
+                return response()->json(["success" => 1]); 
             }
             else{
                 Friend::find($request->request_id)->delete();
