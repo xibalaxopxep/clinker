@@ -69,5 +69,37 @@ public $successStatus = 200;
         }
     }
 
+     public function cancel(Request $request) 
+    { 
+        $user = Auth::user(); 
+        $validator = Validator::make($request->all(), [ 
+            // 'old_password' => 'required',
+            'type' => 'required',
+            'request_id' => 'required'
+        ]);
+        if ($validator->fails()) { 
+                    $errorString = implode("\r\n",$validator->messages()->all());
+                    return response()->json(['error'=>$errorString]);            
+                }
+        $record = Friend::find($request->request_id);
+        if(!$record){
+            return response()->json(["success" => 0], 404); 
+        }
+        if($record->type == 1){
+             return response()->json(["error" => "Người này đã là bạn bè"], $this->successStatus); 
+        }
+        else{
+            if($request->type == 1){
+                $record->update(['type'=>$request->type]);
+                Friend::create(['user_id'=>$record->friend_id,'friend_id'=>$record->user_id,'type'=>1]);
+                return response()->json(["success" => 1]); 
+            }
+            else{
+                Friend::find($request->request_id)->delete();
+                return response()->json(["success" => 1]); 
+            }
+        }
+    }
+
 
 }

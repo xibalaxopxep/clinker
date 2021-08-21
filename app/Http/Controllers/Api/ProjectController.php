@@ -237,11 +237,10 @@ class ProjectController extends Controller {
     }
 
     public function group(Request $request){
-         $host = $request->getSchemeAndHttpHost();
-        $records = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_id',$request->project_id)->get()->groupBy('group_name');
+        $host = $request->getSchemeAndHttpHost();
+        $records = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->get()->groupBy('group_name');
         foreach($records as $record){
             foreach($record as $key=> $re){
-
                 $record[$key]->avatar =  $host.$re->avatar;
             }
         }

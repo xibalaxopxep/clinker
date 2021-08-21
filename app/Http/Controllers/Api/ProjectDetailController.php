@@ -70,15 +70,44 @@ class ProjectDetailController extends Controller {
 
     public function index(Request $request) {
         $host = $request->getSchemeAndHttpHost();
-        $records = DB::table('project_detail')->where('project_id',$request->project_id)->orderBy('deadline','asc')->get();
-        foreach($records as $key => $record){
-            $image = array();
-            if($record->images != null){
-                foreach( explode(',',$record->images) as $rd ){
-                     $image[] =  $host.$rd;
-                }
-                $records[$key]->images = $image;
-            }
+        $records = DB::table('project_detail')->where('project_id',$request->project_id)->orderBy('deadline','asc');
+        if($request->groupName != null){
+            $records->where('group_name',$request->groupName);
+        }
+       
+        if($request->date != null){
+            $from = $request->date." 00:00:00";
+            $to = $request->date." 23:59:59";
+            $records->whereBetween('deadline', [$from, $to]);
+        }
+        $records = $records->get();
+        
+        $works = DB::table('type_work')->get();
+        //$lighters = DB::table('lighter_detail')->get();
+        $host = $request->getSchemeAndHttpHost();
+        foreach($records as $key =>$record){    
+                    $records[$key]->work_name = "";
+                    //$records[$key]->lighter_name = "";
+                    foreach ($works as $work) {
+                        if($work->id == $record->work_id){
+                            $records[$key]->work_name = $work->name;
+                            break;
+                        }
+                    }
+                    // foreach ($lighters as $lighter) {
+                    //     if($lighter->lighter_code == $record->lighter_code){
+                    //         $records[$key]->lighter_name = $lighter->lighter_code;
+                    //         break;
+                    //     }
+                    // }
+                     $image = array();
+                    if($record->images != null){
+                        foreach( explode(',',$record->images) as $rd ){
+                             $image[] =  $host.$rd;
+                        }
+                        $records[$key]->images = $image;
+                    }
+                        
         }
         if($request->isGop == 1){
              $records= $records->groupBy('deadline');
@@ -90,23 +119,22 @@ class ProjectDetailController extends Controller {
    
     public function show(Request $request) {
         $record = DB::table('project_detail')->where('id',$request->id)->first();
-        $works = DB::table('type_work')->get();
         $record->work_name = "";
         $record->lighter_name = "";
-        $lighter_details = DB::table('type_work')->get();
+        $works = DB::table('type_work')->get();
         foreach ($works as $work) {
             if($work->id == $record->work_id){
                 $record->work_name = $work->name;
                 break;
             }
         }
-        $lighters = DB::table('lighter_detail')->get();
-        foreach ($lighters as $lighter) {
-            if($lighter->lighter_code == $record->lighter_code){
-                $record->lighter_name = $lighter->lighter_code;
-                break;
-            }
-        }
+        // $lighters = DB::table('lighter_detail')->get();
+        // foreach ($lighters as $lighter) {
+        //     if($lighter->lighter_code == $record->lighter_code){
+        //         $record->lighter_name = $lighter->lighter_code;
+        //         break;
+        //     }
+        // }
         $host = $request->getSchemeAndHttpHost();
         $index = array();
         foreach(explode(',',$record->images) as $key=> $img){
