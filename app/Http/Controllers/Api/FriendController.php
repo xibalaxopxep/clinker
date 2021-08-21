@@ -15,7 +15,9 @@ public $successStatus = 200;
     public function index(Request $request) 
     { 
         $user = Auth::user(); 
-        $records = Friend::join('user','user.id','=','friend.user_id')->where('user_id',$user->id)->where('friend.type',1)->select('*','user.type as user_type','friend.type as friend_type')->get();
+        $friend_ids = Friend::where('user_id',$user->id)->where('type',1)->get()->pluck('friend_id')->toArray();
+        $records = User::whereIn('id',$friend_ids)->get();
+        return $records;
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
  
