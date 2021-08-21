@@ -99,6 +99,7 @@ class ProjectDetailController extends Controller {
                 break;
             }
         }
+        return $record->work_name;
 
         $lighters = DB::table('lighter_detail')->get();
         foreach ($lighters as $lighter) {
