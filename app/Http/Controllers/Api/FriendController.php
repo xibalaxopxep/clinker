@@ -64,7 +64,7 @@ public $successStatus = 200;
             }
             else{
                 Friend::find($request->request_id)->delete();
-                return response()->json(["error" => "Huỷ yêu cầu kết bạn thành công"]); 
+                return response()->json(["success" => 1]); 
             }
         }
     }
