@@ -10,6 +10,8 @@ Route::post('/user/register', ['as' => 'api.user.register', 'uses' => 'Api\AuthM
 Route::group(['middleware' => 'auth:api'], function(){
     // get sà lan
     Route::get('/lighter/index', ['as' => 'api.lighter.index', 'uses' => 'Api\ProjectDetailController@getLighter']);
+    //get xà lan theo dự án
+     Route::get('/lighter/getByProject', ['as' => 'api.lighter.getByProject', 'uses' => 'Api\ProjectDetailController@getByProject']);
     // lấy danh sách địa điểm
     Route::get('/address/index', ['as' => 'api.address.index', 'uses' => 'Api\AddressController@index']);
     //phuong thuc thanh toan
@@ -53,6 +55,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/project/user/index', ['as' => 'api.project_user.index', 'uses' => 'Api\UserController@index']);
     Route::get('/project/user/findByEmail', ['as' => 'api.project_user.findByEmail', 'uses' => 'Api\UserController@findByEmail']);
     Route::get('/project/user/member', ['as' => 'api.project_user.member', 'uses' => 'Api\UserController@member']);
+    Route::get('/project/group', ['as' => 'api.project.group', 'uses' => 'Api\ProjectController@group']);
     
     
     Route::post('/timeline/store', ['as' => 'api.timeline.store', 'uses' => 'Api\TimelineController@store']);

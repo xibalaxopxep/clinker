@@ -20,6 +20,7 @@ class ProjectController extends Controller {
     public $successStatus = 200;
 
     public function index() {
+        $user = Auth::user();
         $records = DB::table('project')->get();
         return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
     }
@@ -216,7 +217,7 @@ class ProjectController extends Controller {
         }
     }
 
-       public function getGroup(Request $request){
+    public function getGroup(Request $request){
         $records = DB::table('project_group')->where('project_id', $request->project_id)->get()->groupBy('group_name');
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
@@ -225,9 +226,21 @@ class ProjectController extends Controller {
         }
     }
 
-     
- 
+    public function group(Request $request){
+         $host = $request->getSchemeAndHttpHost();
+        $records = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_id',$request->project_id)->get()->groupBy('group_name');
+        foreach($records as $record){
+            foreach($record as $key=> $re){
 
+                $record[$key]->avatar =  $host.$re->avatar;
+            }
+        }
+        if($records){
+             return response()->json(['success' => 1,'records'=> $records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]);
+        }
+    }
 }
 
 

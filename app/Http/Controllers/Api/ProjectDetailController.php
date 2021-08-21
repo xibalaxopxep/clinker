@@ -92,12 +92,14 @@ class ProjectDetailController extends Controller {
     public function show(Request $request) {
         $record = DB::table('project_detail')->where('id',$request->id)->first();
         $works = DB::table('type_work')->get();
+        $lighter_details = DB::table('type_work')->get();
         foreach ($works as $work) {
             if($work->id == $record->work_id){
                 $record->work_name = $work->name;
                 break;
             }
         }
+
         $lighters = DB::table('lighter_detail')->get();
         foreach ($lighters as $lighter) {
             if($lighter->id == $record->lighter_id){
@@ -105,6 +107,12 @@ class ProjectDetailController extends Controller {
                 break;
             }
         }
+        $host = $request->getSchemeAndHttpHost();
+        $index = array();
+        foreach(explode(',',$record->images) as $key=> $img){
+              $index[] = $host.$img;
+        }
+        $record->images = $index;
 
         if($record){
            return response()->json(['success' => 1,'record'=>$record]); 
