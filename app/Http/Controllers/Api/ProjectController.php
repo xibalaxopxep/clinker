@@ -81,14 +81,14 @@ class ProjectController extends Controller {
         foreach($project_member as $key => $member){
              $project_member[$key]->avatar = $host . $member->avatar;
         }
-        $address_arr = explode(',',$record->address_id);
-        $arr_tmp = array();
-        foreach ($address_arr as $key => $item)
-        {
-            $address = DB::table('address')->where('id',$item)->first();
-            array_push($arr_tmp,$address);
-        }
-        $record->address = $arr_tmp;
+        //$address_arr = explode(',',$record->address_id);
+        // $arr_tmp = array();
+        // foreach ($address_arr as $key => $item)
+        // {
+        //     $address = DB::table('address')->where('id',$item)->first();
+        //     array_push($arr_tmp,$address);
+        // }
+        // $record->address = $arr_tmp;
         if($record){
            return response()->json(['success' => 1,'record'=>$record,'project_member'=>$project_member]); 
         }else{

@@ -80,6 +80,11 @@ class ProjectDetailController extends Controller {
                 $records[$key]->images = $image;
             }
         }
+        // foreach($records as $key => $record){
+        //     $groups = DB::table('group')->where('group_name',$record->group_name)->get();
+        //     $records[$key]->group_name = $groups;
+        // }
+
         return response()->json(['success' => 1,'records'=>$records]); 
     }
 

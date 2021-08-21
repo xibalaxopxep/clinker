@@ -17,7 +17,6 @@ public $successStatus = 200;
         $user = Auth::user(); 
         $friend_ids = Friend::where('user_id',$user->id)->where('type',1)->get()->pluck('friend_id')->toArray();
         $records = User::whereIn('id',$friend_ids)->get();
-        return $records;
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
  
@@ -26,7 +25,6 @@ public $successStatus = 200;
         $user = Auth::user(); 
         $friend_ids = Friend::where('user_id',$user->id)->where('type','=',0)->get()->pluck('friend_id');
         $records = User::join('friend','friend.friend_id','=','user.id')->where('friend.user_id',$user->id)->where('friend.type',0)->whereIn('user.id',$friend_ids)->select('*','friend.id as request_id','friend.type as type')->get();
-        return $records;
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
 
@@ -34,7 +32,8 @@ public $successStatus = 200;
      public function requested(Request $request) 
     { 
         $user = Auth::user(); 
-        $records = User::join('friend','friend.friend_id','=','user.id')->where('friend.friend_id',$user->id)->where('friend.type',0)->select('*','friend.id as request_id','friend.type as type')->get();
+        $friend_ids = Friend::where('friend_id',$user->id)->where('type','=',0)->get()->pluck('user_id');
+        $records = User::join('friend','friend.user_id','=','user.id')->where('friend.friend_id',$user->id)->where('friend.type',0)->select('*','friend.id as request_id','friend.type as type')->get();
         return response()->json(['success' => 1,'records'=> $records], $this->successStatus); 
     } 
 

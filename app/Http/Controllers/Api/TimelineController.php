@@ -29,7 +29,6 @@ class TimelineController extends Controller {
          $input = $request->except('project_id');
          $validator = Validator::make( $input, [ 
             'work_id' => 'required',
-            'address' => 'required',
             'lighter_id' => 'required', 
             'group_name' => 'required', 
             'deadline'=> "required",
