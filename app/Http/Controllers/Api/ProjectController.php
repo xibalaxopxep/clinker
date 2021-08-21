@@ -201,7 +201,7 @@ class ProjectController extends Controller {
     } 
 
     public function findByStatus(Request $request){
-        $records = DB::table('project')->where('status',$request->status)->get();
+        $records = DB::table('project')->where('status_id',$request->status)->get();
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
         }else{

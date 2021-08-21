@@ -92,7 +92,7 @@ class ProjectDetailController extends Controller {
         $record = DB::table('project_detail')->where('id',$request->id)->first();
         $works = DB::table('type_work')->get();
         $record->work_name = "";
-        $record->lighter_detail = "";
+        $record->lighter_name = "";
         $lighter_details = DB::table('type_work')->get();
         foreach ($works as $work) {
             if($work->id == $record->work_id){
