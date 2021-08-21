@@ -100,9 +100,6 @@ class ProjectDetailController extends Controller {
                 break;
             }
         }
-
-        return $record->work_name;
-
         $lighters = DB::table('lighter_detail')->get();
         foreach ($lighters as $lighter) {
             if($lighter->id == $record->lighter_id){
@@ -113,7 +110,7 @@ class ProjectDetailController extends Controller {
         $host = $request->getSchemeAndHttpHost();
         $index = array();
         foreach(explode(',',$record->images) as $key=> $img){
-              $index[] = $host.$img;
+              $index[] = $host . $img;
         }
         $record->images = $index;
 
