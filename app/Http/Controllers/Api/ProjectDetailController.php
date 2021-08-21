@@ -79,6 +79,8 @@ class ProjectDetailController extends Controller {
             $from = $request->date." 00:00:00";
             $to = $request->date." 23:59:59";
             $records->whereBetween('deadline', [$from, $to]);
+        }else{
+            $records->whereDate('deadline', Carbon::now('Asia/Ho_Chi_Minh'));
         }
         $records = $records->get();
         

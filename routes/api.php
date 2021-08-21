@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/friend/request', ['as' => 'api.friend.request', 'uses' => 'Api\FriendController@request']);
     Route::post('/friend/response', ['as' => 'api.friend.response', 'uses' => 'Api\FriendController@response']);
     Route::get('/friend/requested', ['as' => 'api.friend.requested', 'uses' => 'Api\FriendController@requested']);
+    Route::post('/friend/cancel', ['as' => 'api.friend.cancel', 'uses' => 'Api\FriendController@cancel']);
     //dự án
     Route::post('/project/store', ['as' => 'api.project.store', 'uses' => 'Api\ProjectController@store']);
     Route::get('/project/index', ['as' => 'api.project.index', 'uses' => 'Api\ProjectController@index']);
