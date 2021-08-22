@@ -152,7 +152,6 @@ class ProjectController extends Controller {
         DB::table('project_group')->where('project_id',$request->id)->delete();
         $index = 0;
         foreach($request->project_group as $key => $group){
-
             foreach ($group as $key1 => $gr) {
                 $data2['project_id'] = $request->id;
                 $data2['group_name'] = $key;
@@ -163,7 +162,7 @@ class ProjectController extends Controller {
                     $data2['is_manage'] = 0;
                 }
                 if($index >0){
-                $record = DB::table('project_group')->where('project_id',$request->id)->get()->pluck('user_id');
+                $record = DB::table('project_group')->where('project_id',$request->id)->get()->pluck('user_id')->toArray();
                 if (in_array($gr, $record) == false ) {
                      DB::table('project_group')->insert($data2);
                 }
