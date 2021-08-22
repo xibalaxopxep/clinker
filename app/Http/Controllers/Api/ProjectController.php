@@ -38,7 +38,7 @@ class ProjectController extends Controller {
 
 
     public function store(Request $request) {
-        $input = $request->except('project_member');
+        $input = $request->except(['project_member','project_group','manage_id']);
         $validator = Validator::make($input, [ 
             'code' => 'required|unique:project',
             'customer_buy' => 'required',
@@ -59,6 +59,7 @@ class ProjectController extends Controller {
             $input['status_id'] = 2;
         }
         $project = DB::table('project')->insertGetId($input);
+
         if($request->has("project_member")){
         foreach($request->project_member as $member){
             $data['project_id'] = $project;
@@ -70,6 +71,7 @@ class ProjectController extends Controller {
 
 
         if($request->has("lighter_codes") || $request->has("lighter_codes") != null){
+
         foreach( explode(',',$request->lighter_codes) as $lighter){
             $data1['project_id'] = $project;
             $data1['lighter_code'] = $lighter;
@@ -138,7 +140,6 @@ class ProjectController extends Controller {
             DB::table('project_member')->insert($data);
         }
         }
-        
         if($request->has("lighter_codes") || $request->has("lighter_codes")!=null){
         DB::table('lighter_detail')->where('project_id',$request->id)->delete();
         foreach( explode(',',$request->lighter_codes) as $lighter){
@@ -162,7 +163,7 @@ class ProjectController extends Controller {
                     $data2['is_manage'] = 0;
                 }
                 if($index >0){
-                $record = DB::table('project_group')->where('project_id',$request->id)->get()->pluck('user_id')->toArray();
+                $record = DB::table('project_group')->where('project_id',$request->id)->get()->pluck('user_id');
                 if (in_array($gr, $record) == false ) {
                      DB::table('project_group')->insert($data2);
                 }
