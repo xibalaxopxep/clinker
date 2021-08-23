@@ -25,13 +25,15 @@ class ProjectController extends Controller {
                 $records = DB::table('project')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
-            elseif($user->type == 2 || $user->type == 4){
+            elseif($user->type == 2 || $user->type == 4 ){
                 $project_id = DB::table('project_member')->where('user_id',$user->id)->get()->pluck('project_id');
                 $records = DB::table('project')->whereIn('id',$project_id)->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
             else{
-                return response()->json(['success' => 0]); 
+                  $project_id = DB::table('project_group')->where('user_id',$user->id)->get()->pluck('project_id');
+                $records = DB::table('project')->whereIn('id',$project_id)->get();
+                return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
     }
 
