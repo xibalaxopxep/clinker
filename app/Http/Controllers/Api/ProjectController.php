@@ -47,7 +47,6 @@ class ProjectController extends Controller {
             'customer_sell' => 'required', 
             'contact_date' => 'required', 
             'contract-term' => 'required',
-
         ]);
         if ($validator->fails()) { 
             $errorString = implode("\r\n",$validator->messages()->all());
@@ -245,15 +244,17 @@ class ProjectController extends Controller {
     }
 
     public function getGroup(Request $request){
-        $records = DB::table('project_group')->where('project_id', $request->project_id)->orderBy('group_name','asc')->get()->groupBy('group_name');
+        $records = DB::table('project_group')->where('project_id', $request->project_id)->where('is_manage',0)->orderBy('group_name','asc')->get()->groupBy('group_name');
+        $records2 = DB::table('project_group')->where('project_id', $request->project_id)->where('is_manage',1)->orderBy('group_name','asc')->get();
         if($records){
         $member = [];
         $member1 = [];
         foreach($records as $key => $record){
-            $member['manage'] = $records[$key]->where('is_manage',1);
-            $member['member'] = $records[$key]->where('is_manage',0);
+            $member['manage'] = $records2[$key-1];
+            $member['member'] = $record;
             $member1[] = $member;
         }
+       
         return response()->json(['success' => 1,'records'=> $member1]); 
         }
          else{
@@ -263,7 +264,8 @@ class ProjectController extends Controller {
 
     public function group(Request $request){
         $host = $request->getSchemeAndHttpHost();
-        $records = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->get()->groupBy('group_name');
+        $records = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->where('project_group.is_manage',0)->orderBy('project_group.group_name','asc')->get()->groupBy('group_name');
+         $records2 = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->where('project_group.is_manage',1)->orderBy('project_group.group_name','asc')->get();
         if($records){
         foreach($records as $record){
             foreach($record as $key=> $re){
@@ -274,8 +276,8 @@ class ProjectController extends Controller {
         $member = [];
         $member1 = [];
         foreach($records as $key => $record){
-            $member['manage'] = $records[$key]->where('is_manage',1);
-            $member['member'] = $records[$key]->where('is_manage',0);
+            $member['manage'] = $records2[$key-1];
+            $member['member'] = $record;
             $member1[] = $member;
         }
         return response()->json(['success' => 1,'records'=> $member1]); 

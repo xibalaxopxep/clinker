@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/project/store', ['as' => 'api.project.store', 'uses' => 'Api\ProjectController@store']);
     Route::get('/project/index', ['as' => 'api.project.index', 'uses' => 'Api\ProjectController@index']);
     Route::get('/project/show', ['as' => 'api.project.show', 'uses' => 'Api\ProjectController@show']);
-    Route::put('/project/update', ['as' => 'api.project.update', 'uses' => 'Api\ProjectController@update']);
+    Route::post('/project/update', ['as' => 'api.project.update', 'uses' => 'Api\ProjectController@update']);
     Route::post('/project/destroy', ['as' => 'api.project.destroy', 'uses' => 'Api\ProjectController@destroy']);
     Route::get('/project/findByStatus', ['as' => 'api.project.findByStatus', 'uses' => 'Api\ProjectController@findByStatus']);
     Route::get('/project/getStatus', ['as' => 'api.project.getStatus', 'uses' => 'Api\ProjectController@getStatus']);
