@@ -154,7 +154,7 @@ class ProjectDetailController extends Controller {
 
 
     public function update(Request $request) {
-        $input = $request->except(['id','image']);
+        $input = $request->except(['id','image','isBatThuong']);
         $record = DB::table('project_detail')->where('id',$request->id)->first();
         //  $validator = Validator::make($input, [ 
         //     'quantity' => 'required',
@@ -172,10 +172,14 @@ class ProjectDetailController extends Controller {
         $to = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $record->deadline);
         $from = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $input['reporting_time']);
         $diff_in_days = $to->diffInSeconds($from);
+        if($request->isBatThuong != 1){
         if($diff_in_days <= 1800){
             $input['status'] = 1;
         }else{
             $input['status'] = 2;
+        }
+        }else{
+            $input['status'] = 3;
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $get_image = $request->image;
