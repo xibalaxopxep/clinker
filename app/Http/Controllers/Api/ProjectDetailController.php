@@ -154,8 +154,8 @@ class ProjectDetailController extends Controller {
 
 
     public function update(Request $request) {
-         $input = $request->except('id');
-         $record = DB::table('project_detail')->where('id',$request->id)->first();
+        $input = $request->except('id');
+        $record = DB::table('project_detail')->where('id',$request->id)->first();
         //  $validator = Validator::make($input, [ 
         //     'quantity' => 'required',
         //     'real_quantity' => 'required', 
@@ -169,8 +169,6 @@ class ProjectDetailController extends Controller {
         //         $errorString = implode("\r\n",$validator->messages()->all());
         //         return response()->json(['error'=>$errorString]);                 
         // }
-
-     
         $to = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $record->deadline);
         $from = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $input['reporting_time']);
         $diff_in_days = $to->diffInSeconds($from);
@@ -180,6 +178,21 @@ class ProjectDetailController extends Controller {
             $input['status'] = 2;
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
+        $get_images =$request->image;
+        return $request->image;
+        if($get_images){
+            foreach($get_images as $get_image){
+                $get_name_image = $get_image->getClientOriginalName();
+                $name_image = current(explode('.',$get_name_image));
+                $new_image =  $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
+                $get_image->move('img/',$new_image);
+                if($record->images == null){
+                     $input['images'] = '/img/'.$new_image;
+                }else{
+                     $input['images'] = $record->images.',/img/'.$new_image;
+                }
+            }
+        }
         $project = DB::table('project_detail')->where('id',$request->id)->update($input);
         if ($project) {
              return response()->json(['success' => 1]); 
