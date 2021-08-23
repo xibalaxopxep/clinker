@@ -241,19 +241,18 @@ class ProjectController extends Controller {
     }
 
     public function getGroup(Request $request){
-        $records = DB::table('project_group')->where('project_id', $request->project_id)->where('is_manage',0)->orderBy('group_name','asc')->get()->groupBy('group_name');
-        $records2 = DB::table('project_group')->where('project_id', $request->project_id)->where('is_manage',1)->orderBy('group_name','asc')->get()->groupBy('group_name');
-        $index = 0;
+        $records = DB::table('project_group')->where('project_id', $request->project_id)->orderBy('group_name','asc')->get()->groupBy('group_name');
+        if($records){
         $member = [];
         $member1 = [];
         foreach($records as $key => $record){
-            $member['manage'] = $records2[$key];
-            $member['member'] = $records[$key];
-             $member1[] = $member;
+            $member['manage'] = $records[$key]->where('is_manage',1);
+            $member['member'] = $records[$key]->where('is_manage',0);
+            $member1[] = $member;
         }
-        if($records){
-             return response()->json(['success' => 1,'records'=> $records]); 
-        }else{
+        return response()->json(['success' => 1,'records'=> $member1]); 
+        }
+         else{
             return response()->json(['error' => "Không tìm thấy dữ liệu"]);
         }
     }
@@ -261,7 +260,7 @@ class ProjectController extends Controller {
     public function group(Request $request){
         $host = $request->getSchemeAndHttpHost();
         $records = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->get()->groupBy('group_name');
-
+        if($records){
         foreach($records as $record){
             foreach($record as $key=> $re){
                 $record[$key]->avatar =  $host.$re->avatar;
@@ -272,13 +271,12 @@ class ProjectController extends Controller {
         $member1 = [];
         foreach($records as $key => $record){
             $member['manage'] = $records[$key]->where('is_manage',1);
-            $member['member'] = $records[$key]->where('is_manage',0);;
-             $member1[] = $member;
+            $member['member'] = $records[$key]->where('is_manage',0);
+            $member1[] = $member;
         }
-        return $member1;
-        if($records){
-             return response()->json(['success' => 1,'records'=> $records]); 
-        }else{
+        return response()->json(['success' => 1,'records'=> $member1]); 
+        }
+        else{
             return response()->json(['error' => "Không tìm thấy dữ liệu"]);
         }
     }
