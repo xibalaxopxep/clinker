@@ -31,7 +31,7 @@ class ProjectController extends Controller {
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
             else{
-                  $project_id = DB::table('project_group')->where('user_id',$user->id)->get()->pluck('project_id');
+                $project_id = DB::table('project_group')->where('user_id',$user->id)->get()->pluck('project_id');
                 $records = DB::table('project')->whereIn('id',$project_id)->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
@@ -50,8 +50,8 @@ class ProjectController extends Controller {
 
         ]);
         if ($validator->fails()) { 
-                    $errorString = implode("\r\n",$validator->messages()->all());
-                    return response()->json(['error'=>$errorString]);                 
+            $errorString = implode("\r\n",$validator->messages()->all());
+            return response()->json(['error'=>$errorString]);                 
         }
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
@@ -214,7 +214,9 @@ class ProjectController extends Controller {
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
             else{
-                return response()->json(['success' => 0]); 
+                $project_id = DB::table('project_group')->where('user_id',$user->id)->get()->pluck('project_id');
+                $records = DB::table('project')->where('status_id',$request->status)->whereIn('id',$project_id)->get();
+                return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
         
         if($records){
