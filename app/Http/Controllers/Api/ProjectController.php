@@ -21,6 +21,7 @@ class ProjectController extends Controller {
 
     public function index() {
         $user = Auth::user();
+
             if($user->type == 1){
                 $records = DB::table('project')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
@@ -265,21 +266,33 @@ class ProjectController extends Controller {
     public function group(Request $request){
         $host = $request->getSchemeAndHttpHost();
         $records = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->where('project_group.is_manage',0)->orderBy('project_group.group_name','asc')->get()->groupBy('group_name');
-         $records2 = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->where('project_group.is_manage',1)->orderBy('project_group.group_name','asc')->get();
+        $records2 = DB::table('project_group')->join('user','user.id','=','project_group.user_id')->where('project_group.project_id',$request->project_id)->where('project_group.is_manage',1)->orderBy('project_group.group_name','asc')->get();
         if($records){
         foreach($records as $record){
             foreach($record as $key=> $re){
                 $record[$key]->avatar =  $host.$re->avatar;
             }
         }
-
         $member = [];
         $member1 = [];
         foreach($records as $key => $record){
-            $member['manage'] = $records2[$key-1];
+            if(count($records2) == 1){
+                if($key == $records2->pluck('group_name')[0]){
+                     $member['manage'] = $records2;
+                }
+                else{
+                    $member['manage'] = "";
+                }
+            }
+            else{
+            if(!empty($records2[$key-1])){
+                $member['manage'] = $records2[$key-1];
+            }
+            }
             $member['member'] = $record;
             $member1[] = $member;
         }
+        
         return response()->json(['success' => 1,'records'=> $member1]); 
         }
         else{

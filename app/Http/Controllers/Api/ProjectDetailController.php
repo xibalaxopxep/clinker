@@ -70,7 +70,9 @@ class ProjectDetailController extends Controller {
 
     public function index(Request $request) {
         $host = $request->getSchemeAndHttpHost();
+
         $records = DB::table('project_detail')->where('project_id',$request->project_id)->orderBy('deadline','asc');
+
         if($request->groupName != null){
             $records->where('group_name',$request->groupName);
         }
@@ -83,7 +85,6 @@ class ProjectDetailController extends Controller {
             $records->whereDate('deadline', Carbon::now('Asia/Ho_Chi_Minh'));
         }
         $records = $records->get();
-        
         $works = DB::table('type_work')->get();
         //$lighters = DB::table('lighter_detail')->get();
         $host = $request->getSchemeAndHttpHost();
