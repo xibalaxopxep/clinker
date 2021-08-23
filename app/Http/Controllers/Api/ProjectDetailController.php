@@ -181,17 +181,16 @@ class ProjectDetailController extends Controller {
         $get_image = $request->image;
 
         if($get_image){
-     
-                $get_name_image = $get_image->getClientOriginalName();
-                $name_image = current(explode('.',$get_name_image));
-                $new_image =  $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
-                $get_image->move('img/',$new_image);
-                if($record->images == null){
-                     $input['images'] = '/img/'.$new_image;
-                }else{
-                     $input['images'] = $record->images.',/img/'.$new_image;
-                }
+            $get_name_image = $get_image->getClientOriginalName();
+            $name_image = current(explode('.',$get_name_image));
+            $new_image =  $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
+            $get_image->move('img/',$new_image);
+            if($record->images == null){
+                 $input['images'] = '/img/'.$new_image;
+            }else{
+                 $input['images'] = $record->images.',/img/'.$new_image;
             }
+        }
         
         $project = DB::table('project_detail')->where('id',$request->id)->update($input);
         if ($project) {
@@ -216,6 +215,12 @@ class ProjectDetailController extends Controller {
     public function getWeather(Request $request) {
 
         $records = DB::table('weather')->get();
+        return response()->json(['success' => 1,'records'=>$records]);
+    }
+
+      public function getReport(Request $request) {
+
+        $records = DB::table('report')->get();
         return response()->json(['success' => 1,'records'=>$records]);
     }
 

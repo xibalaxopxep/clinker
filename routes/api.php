@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/project-detail/show', ['as' => 'api.project_detail.show', 'uses' => 'Api\ProjectDetailController@show']);
     Route::post('/project-detail/update', ['as' => 'api.project_detail.update', 'uses' => 'Api\ProjectDetailController@update']);
     Route::get('/project-detail/getWeather', ['as' => 'api.project_detail.getWeather', 'uses' => 'Api\ProjectDetailController@getWeather']);
+    Route::get('/project-detail/getReport', ['as' => 'api.project_detail.getReport', 'uses' => 'Api\ProjectDetailController@getReport']);
     Route::get('/project-detail/getTypeWork', ['as' => 'api.project_detail.getTypeWork', 'uses' => 'Api\ProjectDetailController@getTypeWork']);
     Route::post('/project-detail/uploadImage', ['as' => 'api.project_detail.uploadImage', 'uses' => 'Api\ProjectDetailController@uploadImage']);
     Route::post('/project-detail/deleteImage', ['as' => 'api.project_detail.deleteImage', 'uses' => 'Api\ProjectDetailController@deleteImage']);
