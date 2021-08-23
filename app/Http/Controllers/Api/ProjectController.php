@@ -201,7 +201,20 @@ class ProjectController extends Controller {
     } 
 
     public function findByStatus(Request $request){
-        $records = DB::table('project')->where('status_id',$request->status)->get();
+         $user = Auth::user();
+            if($user->type == 1){
+                $records = DB::table('project')->where('status_id',$request->status)->get();
+                return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
+            }
+            elseif($user->type == 2 || $user->type == 4){
+                $project_id = DB::table('project_member')->where('user_id',$user->id)->get()->pluck('project_id');
+                $records = DB::table('project')->where('status_id',$request->status)->whereIn('id',$project_id)->get();
+                return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
+            }
+            else{
+                return response()->json(['success' => 0]); 
+            }
+        
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
         }else{
