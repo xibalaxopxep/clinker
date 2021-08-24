@@ -86,6 +86,7 @@ class ProjectDetailController extends Controller {
         }
         $records = $records->get();
         $works = DB::table('type_work')->get();
+        $reports = DB::table('report')->get();
         //$lighters = DB::table('lighter_detail')->get();
         $host = $request->getSchemeAndHttpHost();
         foreach($records as $key =>$record){    
@@ -94,6 +95,13 @@ class ProjectDetailController extends Controller {
                     foreach ($works as $work) {
                         if($work->id == $record->work_id){
                             $records[$key]->work_name = $work->name;
+                            break;
+                        }
+                    }
+
+                    foreach ($reports as $report) {
+                        if($report->id == $record->report_id){
+                            $records[$key]->report_name = $report->name;
                             break;
                         }
                     }
@@ -125,9 +133,17 @@ class ProjectDetailController extends Controller {
         $record->work_name = "";
         $record->lighter_name = "";
         $works = DB::table('type_work')->get();
+        $reports = DB::table('report')->get();
         foreach ($works as $work) {
             if($work->id == $record->work_id){
                 $record->work_name = $work->name;
+                break;
+            }
+        }
+
+        foreach ($reports as $report) {
+            if($report->id == $record->report_id){
+                $records[$key]->report_name = $report->name;
                 break;
             }
         }

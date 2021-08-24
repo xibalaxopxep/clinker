@@ -9,7 +9,7 @@ Route::post('/user/register', ['as' => 'api.user.register', 'uses' => 'Api\AuthM
 //xác thực access token
 Route::group(['middleware' => 'auth:api'], function(){
     // get sà lan
-    Route::get('/lighter/index', ['as' => 'api.lighter.index', 'uses' => 'Api\ProjectDetailController@getLighter']);
+    Route::get('/lighter/index', ['as' => 'api.lighter.getLighter', 'uses' => 'Api\LighterController@getLighter']);
     //get xà lan theo dự án
      Route::get('/lighter/getByProject', ['as' => 'api.lighter.getByProject', 'uses' => 'Api\ProjectDetailController@getByProject']);
     // lấy danh sách địa điểm
