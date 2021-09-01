@@ -76,7 +76,10 @@ class ProjectDetailController extends Controller {
         if($request->groupName != null){
             $records->where('group_name',$request->groupName);
         }
-       
+       // if($request->user_id != null){
+//            $records->where('user_id',$request->user_id);
+//        }
+//       
         if($request->date != null){
             $from = $request->date." 00:00:00";
             $to = $request->date." 23:59:59";
@@ -123,7 +126,6 @@ class ProjectDetailController extends Controller {
         if($request->isGop == 1){
              $records= $records->groupBy('deadline');
         }
-
         return response()->json(['success' => 1,'records'=>$records]); 
     }
 
@@ -185,6 +187,7 @@ class ProjectDetailController extends Controller {
         //         $errorString = implode("\r\n",$validator->messages()->all());
         //         return response()->json(['error'=>$errorString]);                 
         // }
+        $input['reporting_time'] = Carbon::now('Asia/Ho_Chi_Minh');
         $to = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $record->deadline);
         $from = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $input['reporting_time']);
         $diff_in_days = $to->diffInSeconds($from);
@@ -199,19 +202,22 @@ class ProjectDetailController extends Controller {
         }
         $input['updated_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $get_image = $request->image;
-
         if($get_image){
-            $get_name_image = $get_image->getClientOriginalName();
-            $name_image = current(explode('.',$get_name_image));
-            $new_image =  $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension();
-            $get_image->move('img/',$new_image);
-            if($record->images == null){
-                 $input['images'] = '/img/'.$new_image;
-            }else{
-                 $input['images'] = $record->images.',/img/'.$new_image;
+            foreach ($get_image as $key =>$item)
+            {
+                $get_name_image = $item->getClientOriginalName();
+                $name_image = current(explode('.',$get_name_image));
+                $new_image =  $name_image.rand(0,99).'.'.$item->getClientOriginalExtension();
+                $item->move('img/',$new_image);
+                if($record->images == null){
+                     $image_path = '/img/'.$new_image;
+                }else{
+                     $image_path = $record->images.',/img/'.$new_image;
+                }
+                $input['images'] = $input['images'].$image_path.',';
             }
         }
-        
+        $input['lighter_code'] = DB::table('lighter_detail')->where('id',$request->lighter_id)->value('lighter_code');
         $project = DB::table('project_detail')->where('id',$request->id)->update($input);
         if ($project) {
              return response()->json(['success' => 1]); 

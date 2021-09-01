@@ -10,6 +10,7 @@ Route::post('/user/register', ['as' => 'api.user.register', 'uses' => 'Api\AuthM
 Route::group(['middleware' => 'auth:api'], function(){
     // get sà lan
     Route::get('/lighter/index', ['as' => 'api.lighter.getLighter', 'uses' => 'Api\LighterController@getLighter']);
+    Route::get('/lighter/detail', ['as' => 'api.lighter.getLighter', 'uses' => 'Api\LighterController@detail']);
     //get xà lan theo dự án
      Route::get('/lighter/getByProject', ['as' => 'api.lighter.getByProject', 'uses' => 'Api\ProjectDetailController@getByProject']);
     // lấy danh sách địa điểm
@@ -53,12 +54,14 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/project-detail/uploadImage', ['as' => 'api.project_detail.uploadImage', 'uses' => 'Api\ProjectDetailController@uploadImage']);
     Route::post('/project-detail/deleteImage', ['as' => 'api.project_detail.deleteImage', 'uses' => 'Api\ProjectDetailController@deleteImage']);
     Route::post('/project-detail/deleteImage', ['as' => 'api.project_detail.deleteImage', 'uses' => 'Api\ProjectDetailController@deleteImage']);
+    Route::post('/project-detail/complete', ['as' => 'api.project_detail.complete', 'uses' => 'Api\ProjectDetailController@complete']);
     //Nhân viên trong dự án
     Route::get('/project/user/index', ['as' => 'api.project_user.index', 'uses' => 'Api\UserController@index']);
+    Route::get('/project/user/getProject', ['as' => 'api.project_user.index', 'uses' => 'Api\UserController@getProject']);
     Route::get('/project/user/findByEmail', ['as' => 'api.project_user.findByEmail', 'uses' => 'Api\UserController@findByEmail']);
     Route::get('/project/user/member', ['as' => 'api.project_user.member', 'uses' => 'Api\UserController@member']);
     Route::get('/project/group', ['as' => 'api.project.group', 'uses' => 'Api\ProjectController@group']);
-    
+     Route::post('/project/complete', ['as' => 'api.project.complete', 'uses' => 'Api\ProjectController@complete']);
     
     Route::post('/timeline/store', ['as' => 'api.timeline.store', 'uses' => 'Api\TimelineController@store']);
     Route::get('/timeline/index', ['as' => 'api.timeline.index', 'uses' => 'Api\TimelineController@index']);
@@ -66,4 +69,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/timeline/update', ['as' => 'api.timeline.update', 'uses' => 'Api\TimelineController@update']);
     Route::post('/timeline/destroy', ['as' => 'api.timeline.destroy', 'uses' => 'Api\TimelineController@destroy']);
     
+    // Bao cao
+    Route::get('/report/index', ['as' => 'api.report.index', 'uses' => 'Api\ReportController@index']);
+    Route::get('/report/findByProject', ['as' => 'api.report.findByProject', 'uses' => 'Api\ReportController@findByProject']);
+    Route::post('/report/create', ['as' => 'api.report.create', 'uses' => 'Api\ReportController@create']);
 });

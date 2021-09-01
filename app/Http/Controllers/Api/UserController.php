@@ -29,6 +29,10 @@ class UserController extends Controller {
         //$friend_ids = Friend::where('user_id',$user->id)->where('type',0)->get()->pluck('friend_id');
         $records = User::join('friend','friend.friend_id','=','user.id')->where('user.email', 'LIKE', '%' . $request->email . '%')->where('friend.user_id',$user->id)->where('user.type',3)->select('*','friend.id as request_id')->select('*', 'user.type as type')->get();
         if($records){
+            foreach ($records as $record)
+            {
+                $record['id']= $record['friend_id'];
+            }
         return response()->json(['success' => 1,'records'=> $records]); 
         }else{
             return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
@@ -46,7 +50,17 @@ class UserController extends Controller {
             return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
         }
     }
-
+    
+public function getProject() {
+        $user = Auth::user();
+        $record = DB::table('project_group')->where('user_id',$user->id)->get();
+        if($record){
+           return response()->json(['success' => 1,'record'=>$record,'user_id'=>$user->id]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
+        }
+    }
+    
 
 
 

@@ -29,7 +29,7 @@ class TimelineController extends Controller {
          $input = $request->except('project_id');
          $validator = Validator::make( $input, [ 
             'work_id' => 'required',
-            'lighter_code' => 'required', 
+            'lighter_id' => 'required', 
             'group_name' => 'required', 
             'deadline'=> "required",
         ]);
@@ -41,6 +41,7 @@ class TimelineController extends Controller {
         $input['created_at'] = Carbon::now('Asia/Ho_Chi_Minh');
         $input['created_by'] = \Auth::user()->id;
         $input['project_id'] = $request->project_id;
+        $input['lighter_code'] = DB::table('lighter_detail')->where('id',$request->lighter_id)->value('lighter_code');
         $project = DB::table('project_detail')->insert($input);
         if ($project) {
              return response()->json(['success' => 1]); 

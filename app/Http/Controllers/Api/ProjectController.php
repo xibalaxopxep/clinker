@@ -23,22 +23,29 @@ class ProjectController extends Controller {
         $user = Auth::user();
 
             if($user->type == 1){
-                $records = DB::table('project')->get();
+                $records = DB::table('project')->orderBy('id','DESC')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
             elseif($user->type == 2 || $user->type == 4 ){
                 $project_id = DB::table('project_member')->where('user_id',$user->id)->get()->pluck('project_id');
-                $records = DB::table('project')->whereIn('id',$project_id)->get();
+                $records = DB::table('project')->whereIn('id',$project_id)->orderBy('id','DESC')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
             else{
                 $project_id = DB::table('project_group')->where('user_id',$user->id)->get()->pluck('project_id');
-                $records = DB::table('project')->whereIn('id',$project_id)->get();
+                $records = DB::table('project')->whereIn('id',$project_id)->orderBy('id','DESC')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
     }
 
-
+    public function complete(Request $request) {
+            $record = DB::table('project')->where('id',$request->id)->update(['status_id' => 3]);
+            if ($record) {
+             return response()->json(['success' => 1]); 
+        }else {
+            return response()->json(['success' => 0]); 
+        }
+        }
 
     public function store(Request $request) {
         $input = $request->except(['project_member','project_group','manage_id']);
@@ -110,8 +117,7 @@ class ProjectController extends Controller {
             return response()->json(['error' => "Không tìm thấy dữ liệu"]); 
         }
     }
-
-
+    
     public function update(Request $request) {
         $input = $request->except(['id','project_member','project_group','manage_id']);
         // $validator = Validator::make($request->all(), [ 
@@ -172,7 +178,15 @@ class ProjectController extends Controller {
                 else{
                     DB::table('project_group')->insert($data2);
                 }
-            
+                // add manage id
+                if ($request->manage_id[$key])
+                {
+                    $manage['project_id'] = $request->id;
+                    $manage['group_name'] = $key;
+                    $manage['user_id'] = $request->manage_id[$key];
+                    $manage['is_manage'] = 1;
+                    DB::table('project_group')->insert($manage);
+                }
              }
              $index++;
             }  
@@ -205,17 +219,17 @@ class ProjectController extends Controller {
     public function findByStatus(Request $request){
          $user = Auth::user();
             if($user->type == 1){
-                $records = DB::table('project')->where('status_id',$request->status)->get();
+                $records = DB::table('project')->where('status_id',$request->status)->orderBy('id','DESC')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
             elseif($user->type == 2 || $user->type == 4){
                 $project_id = DB::table('project_member')->where('user_id',$user->id)->get()->pluck('project_id');
-                $records = DB::table('project')->where('status_id',$request->status)->whereIn('id',$project_id)->get();
+                $records = DB::table('project')->where('status_id',$request->status)->whereIn('id',$project_id)->orderBy('id','DESC')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
             else{
                 $project_id = DB::table('project_group')->where('user_id',$user->id)->get()->pluck('project_id');
-                $records = DB::table('project')->where('status_id',$request->status)->whereIn('id',$project_id)->get();
+                $records = DB::table('project')->where('status_id',$request->status)->whereIn('id',$project_id)->orderBy('id','DESC')->get();
                 return response()->json(['success' => 1,'records'=>$records], $this->successStatus); 
             }
         
@@ -236,7 +250,7 @@ class ProjectController extends Controller {
     }
 
     public function listLighters(Request $request){
-        $records = DB::table('lighter_detail')->where('project_id', $request->project_id)->get();
+        $records = DB::table('lighter_detail')->where('project_id', $request->project_id)->where('lighter_code', '<>', '')->get();
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
         }else{
@@ -270,7 +284,7 @@ class ProjectController extends Controller {
         if($records){
         foreach($records as $record){
             foreach($record as $key=> $re){
-                $record[$key]->avatar =  $host.$re->avatar;
+                $record[$key]->avatar =  $re->avatar;
             }
         }
         $member = [];
@@ -285,9 +299,9 @@ class ProjectController extends Controller {
                 }
             }
             else{
-            if(!empty($records2[$key-1])){
-                $member['manage'] = $records2[$key-1];
-            }
+                if(!empty($records2[$key-1])){
+                    $member['manage'] = array($records2[$key-1]);
+                }
             }
             $member['member'] = $record;
             $member1[] = $member;

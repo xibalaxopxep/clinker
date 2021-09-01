@@ -18,7 +18,16 @@ class LighterController extends Controller {
     public $successStatus = 200;
 
     public function getLighter(Request $request){
-        $records = DB::table('lighter_detail')->where('project_id',$request->project_id)->get();
+        $records = DB::table('lighter_detail')->where('project_id',$request->project_id)->where('lighter_code', '<>' , '')->get();
+        if($records){
+             return response()->json(['success' => 1,'records'=> $records]); 
+        }else{
+            return response()->json(['error' => "Không tìm thấy dữ liệu"]);
+        }
+    }
+    public function detail (Request $request)
+    {
+        $records = DB::table('lighter_detail')->where('id',$request->id)->get();
         if($records){
              return response()->json(['success' => 1,'records'=> $records]); 
         }else{
